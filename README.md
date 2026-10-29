@@ -58,5 +58,16 @@ javac -encoding UTF-8 -d build/classes src/Anniversary.java
 java -cp build/classes Anniversary build .
 ```
 
-Đặt thư mục đầu ra là `dist`. Nếu môi trường build không có JDK, dùng bản build sẵn trên máy qua Direct Upload. Bản nền này chưa được đưa lên Internet.
+Đặt thư mục đầu ra là `dist`. Nếu môi trường build không có JDK, dùng bản build sẵn trên máy qua Direct Upload. Bản hiện tại đã được triển khai tại **https://mox-minh-hai-nam.pages.dev/**. Mã nguồn nằm trong kho riêng tư **https://github.com/tuanbui100821/mox-minh-hai-nam**.
 
+
+### Cập nhật bản chạy
+
+Cloudflare Pages dùng Direct Upload. Đẩy code lên GitHub chưa tự triển khai website. Sau khi sửa nội dung hoặc thêm ảnh, build lại rồi dùng Wrangler đã đăng nhập:
+
+```powershell
+.\build.ps1
+npx wrangler pages deploy dist --project-name mox-minh-hai-nam --branch main
+```
+
+Hoặc tải bản ZIP chứa nội dung `dist/` từ Cloudflare Dashboard. Website là đường dẫn công khai; kho GitHub vẫn riêng tư. Trang `lilmox.pages.dev` trước đó không bị thay đổi.
