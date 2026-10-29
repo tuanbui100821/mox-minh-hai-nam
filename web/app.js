@@ -89,31 +89,30 @@
   const hugs = ['Lại gần anh, cho đêm bớt rộng.', 'Giờ khắc cứ trôi. Mình ở đây thêm một chút.', 'kiss RockKiss. Anh vẫn chọn em.'];
   let sent = 0;
   $('#send-kiss').addEventListener('click', () => { burst($('#send-kiss')); $('#kiss-message').textContent = hugs[sent++ % hugs.length]; });
-  // A quiet original piano-like loop synthesized locally. Starts only on request.
-  let audio, bus, playing = false, timer;
-  const notes = [261.63,311.13,392,466.16,392,293.66,261.63,349.23,415.30,523.25,415.30,349.23,233.08,293.66,349.23,440,349.23,293.66];
-  let noteIndex = 0;
-  function note(frequency, when, volume=.11) {
-    const voice = audio.createGain(); voice.gain.setValueAtTime(0,when); voice.gain.linearRampToValueAtTime(volume,when+.025); voice.gain.exponentialRampToValueAtTime(.0001,when+2.8); voice.connect(bus);
-    for (const [overtone,level] of [[1,1],[2,.23],[3,.06]]) {
-      const osc = audio.createOscillator(), partial = audio.createGain(); osc.type='sine'; osc.frequency.value=frequency*overtone; partial.gain.value=level;
-      osc.connect(partial); partial.connect(voice); osc.start(when); osc.stop(when+3);
-    }
-    setTimeout(() => voice.disconnect(),3500);
+  const music = $('#background-music'), sound = $('#sound'), soundLabel = $('.sound-label');
+  music.volume = .28;
+  function syncSoundState() {
+    const playing = !music.paused && !music.ended;
+    sound.setAttribute('aria-pressed',String(playing));
+    sound.setAttribute('aria-label',`${playing ? 'Tắt' : 'Bật'} nhạc nền I Love You Baby`);
+    soundLabel.textContent = playing ? 'tắt nhạc nền' : 'bật nhạc nền';
   }
-  function playStep() {
-    if (!playing) return;
-    note(notes[noteIndex % notes.length],audio.currentTime+.02);
-    if (noteIndex % 3===0) note([130.81,174.61,116.54][Math.floor(noteIndex / 6) % 3],audio.currentTime+.02,.045);
-    noteIndex++; timer=setTimeout(playStep,1050);
-  }
-  $('#sound').addEventListener('click',async () => {
-    try {
-      if (!audio) { const Audio=window.AudioContext||window.webkitAudioContext; if(!Audio)throw new Error('unsupported'); audio=new Audio(); bus=audio.createGain(); bus.gain.value=.35; bus.connect(audio.destination); }
-      await audio.resume(); playing=!playing;
-      if(playing){bus.gain.setTargetAtTime(.35,audio.currentTime,.2);playStep();}
-      else{clearTimeout(timer);bus.gain.setTargetAtTime(0,audio.currentTime,.3);}
-      $('#sound').setAttribute('aria-pressed',String(playing)); $('.sound-label').textContent=playing?'tắt nhạc':'bật một chút nhạc';
-    } catch { $('.sound-label').textContent='Âm thanh chưa mở được.'; }
+  music.addEventListener('play',syncSoundState);
+  music.addEventListener('pause',syncSoundState);
+  music.addEventListener('error',() => {
+    syncSoundState(); soundLabel.textContent = 'thử bật nhạc lại';
   });
+  sound.addEventListener('click',async () => {
+    if (!music.paused) { music.pause(); return; }
+    sound.disabled = true; sound.setAttribute('aria-busy','true');
+    try {
+      if (music.error) music.load();
+      await music.play();
+    } catch {
+      syncSoundState(); soundLabel.textContent = 'thử bật nhạc lại';
+    } finally {
+      sound.disabled = false; sound.removeAttribute('aria-busy');
+    }
+  });
+  syncSoundState();
 })();

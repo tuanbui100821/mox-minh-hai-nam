@@ -180,6 +180,7 @@ public final class Anniversary {
         if(lower.endsWith(".png"))return "image/png";
         if(lower.endsWith(".jpg")||lower.endsWith(".jpeg"))return "image/jpeg";
         if(lower.endsWith(".webp"))return "image/webp";
+        if(lower.endsWith(".m4a"))return "audio/mp4";
         return "application/octet-stream";
     }
 }

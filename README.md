@@ -4,7 +4,7 @@ Món quà kỷ niệm dành cho **Mox × Đại Đế Tuấn Minh**, từ **25/1
 
 Trang có thêm chiếc vé ngày bắt đầu, cảnh phòng đỏ, cảnh phố xanh, cuộn ảnh chuyển tay kèm lời kể, bốn mẩu nhắn mở riêng, danh sách những điều mong được làm cùng nhau và cảnh sau phần kết. Các mẩu nhắn và kế hoạch tương lai là lời viết gợi ý, không gán những kỷ niệm chưa được cung cấp cho hai bạn.
 
-Các cảnh bổ sung nằm trong `content/`. Java đọc chúng khi build và điền vào trang chính. Bộ chọn màu đổi giữa phối hai sắc phim, phòng đỏ và phố xanh. Màu ảnh dùng hai bộ lọc SVG ở `content/filters.html` kết hợp lớp ánh sáng CSS; không sửa tập tin ảnh gốc. `web/cinema-extended.js` điều khiển cuộn ảnh và lời cuối sau phần kết. Không có ảnh hay nhạc lấy từ phim.
+Các cảnh bổ sung nằm trong `content/`. Java đọc chúng khi build và điền vào trang chính. Bộ chọn màu đổi giữa phối hai sắc phim, phòng đỏ và phố xanh. Màu ảnh dùng hai bộ lọc SVG ở `content/filters.html` kết hợp lớp ánh sáng CSS; không sửa tập tin ảnh gốc. `web/cinema-extended.js` điều khiển cuộn ảnh và lời cuối sau phần kết. Ảnh lấy từ thư viện của hai bạn; nhạc nền dùng tệp người dùng cung cấp.
 
 ## Chạy trên máy
 
@@ -52,7 +52,7 @@ Loại ảnh hỗ trợ: `couple`, `family`, `pet`, `portrait`. Dòng 3 cột c�
 
 Sửa `config/anniversary.properties` (UTF-8) để đổi biệt danh, tên Sữa và ngày bắt đầu. Nội dung thư ở `web/index.html`, các cảnh bổ sung ở `content/`. Thư hiện là lời nhắn viết sẵn, có thể chỉnh lại trước khi gửi Mox. Bấm "Đọc thư anh viết" để mở thư; đây là hiệu ứng giao diện, không phải mật khẩu bảo vệ nội dung.
 
-Ngày bên nhau tính từ 00:00 ngày 25/11/2024 theo UTC+7. Mốc hai năm là 25/11/2026. Giai điệu nhẹ được tổng hợp trong trình duyệt và chỉ phát khi bấm nút. Phông Google Fonts cần mạng; có phông dự phòng khi ngoại tuyến. Hiệu ứng tôn trọng chế độ giảm chuyển động.
+Ngày bên nhau tính từ 00:00 ngày 25/11/2024 theo UTC+7. Mốc hai năm là 25/11/2026. Nhạc nền “I Love You Baby” được tách nguyên luồng âm thanh từ video người dùng cung cấp, lưu tại `web/assets/audio/i-love-you-baby.m4a`. Bấm nút nhạc để phát hoặc tạm dừng; bài phát lặp ở âm lượng 28% và tiếp tục tại vị trí đang nghe khi bật lại. Trang không tải nhạc trước khi bấm phát. Phông Google Fonts cần mạng; có phông dự phòng khi ngoại tuyến. Hiệu ứng tôn trọng chế độ giảm chuyển động.
 
 ## Cloudflare Pages
 
