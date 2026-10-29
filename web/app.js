@@ -19,13 +19,38 @@
   });
   const cards = [...document.querySelectorAll('#gallery [data-photo]')];
   let activeIndex = 0, activePhotos = [];
-  document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
-    document.querySelectorAll('[data-filter]').forEach(other => { const on = other === button; other.classList.toggle('selected', on); other.setAttribute('aria-pressed', String(on)); });
-    cards.forEach(card => { card.hidden = button.dataset.filter !== 'all' && card.dataset.category !== button.dataset.filter; });
+  const eventFilter = $('#event-filter');
+  const chapters = [...document.querySelectorAll('.memory-chapter')];
+  let categoryFilter = 'all';
+  function applyAlbumFilters() {
+    cards.forEach(card => {
+      const categoryMatches = categoryFilter === 'all' || (categoryFilter === 'family' ? ['family','pet'].includes(card.dataset.category) : card.dataset.category === categoryFilter);
+      card.hidden = !categoryMatches || (eventFilter.value !== 'all' && card.dataset.event !== eventFilter.value);
+    });
+    let chapterCount = 0;
+    chapters.forEach(chapter => {
+      const visible = [...chapter.querySelectorAll('[data-photo]')].filter(card => !card.hidden).length;
+      chapter.hidden = visible === 0;
+      chapter.querySelector('.chapter-photos').classList.toggle('single',visible === 1);
+      chapter.querySelector('.chapter-count').textContent = visible + ' khung hình';
+      if (visible) chapterCount++;
+    });
     const visibleCount = cards.filter(card => !card.hidden).length;
     $('#filter-empty').hidden = visibleCount > 0;
-    $('#gallery').classList.toggle('single',visibleCount === 1);
+    $('#photo-count').textContent = visibleCount + ' ảnh · ' + chapterCount + ' chặng';
+  }
+  document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
+    categoryFilter = button.dataset.filter;
+    document.querySelectorAll('[data-filter]').forEach(other => { const on = other === button; other.classList.toggle('selected',on); other.setAttribute('aria-pressed',String(on)); });
+    applyAlbumFilters();
   }));
+  eventFilter.addEventListener('change',applyAlbumFilters);
+  document.querySelectorAll('.journey-timeline a').forEach(link => link.addEventListener('click',() => {
+    eventFilter.value = 'all'; categoryFilter = 'all';
+    document.querySelectorAll('[data-filter]').forEach(button => { const on = button.dataset.filter === 'all'; button.classList.toggle('selected',on); button.setAttribute('aria-pressed',String(on)); });
+    applyAlbumFilters();
+  }));
+  applyAlbumFilters();
   function showPhoto(index) {
     if (!activePhotos.length) return;
     activeIndex = (index + activePhotos.length) % activePhotos.length;

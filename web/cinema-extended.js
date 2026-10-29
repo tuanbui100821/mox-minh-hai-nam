@@ -14,34 +14,52 @@
   });
   const scenes=[
   {
+    "file": "hoi-an-img_1894.jpg",
+    "alt": "Mox và Tuấn Minh chụp chung tại Hội An năm 2025",
+    "caption": "Hội An, năm 2025.\nHai đứa đứng trong cùng khung hình.",
+    "note": "02.09.2025 · Một kỷ niệm của hai đứa ở Hội An."
+  },
+  {
+    "file": "sua-img_2683.jpg",
+    "alt": "Sữa được ôm với chiếc khăn đỏ",
+    "caption": "Sữa và chiếc khăn đỏ.\nMột chỗ nhỏ trong câu chuyện của mình.",
+    "note": "21.01.2026 · Có thêm một vai diễn mang tên Sữa."
+  },
+  {
+    "file": "hue-img_3687.jpg",
+    "alt": "Mox mặc áo dài trước kiến trúc cổ ở Huế",
+    "caption": "Huế, một sáng tháng Chín.\nEm trong tà áo dài.",
+    "note": "02.09.2026 · Anh giữ lại dáng em giữa một khoảng sân cũ."
+  },
+  {
+    "file": "bay-mau-img_3724.jpg",
+    "alt": "Mox và Tuấn Minh đội nón ngồi trên thuyền ở rừng dừa Bảy Mẫu",
+    "caption": "Hai chiếc nón, một chuyến thuyền.\nNgoảnh sang, thấy em đang cười.",
+    "note": "03.09.2026 · Rừng dừa Bảy Mẫu."
+  },
+  {
+    "file": "hoi-an-img_3760.jpg",
+    "alt": "Hai bạn chụp chung dưới đèn lồng ở Hội An",
+    "caption": "Phố lên đèn.\nMình vẫn đứng cạnh nhau.",
+    "note": "03.09.2026 · Buổi tối ở Hội An."
+  },
+  {
+    "file": "da-nang-img_3773.jpg",
+    "alt": "Hai bạn chụp chung bên biển lúc bình minh ở Đà Nẵng",
+    "caption": "Trời vừa sáng.\nHai đứa ở bên biển.",
+    "note": "04.09.2026 · Một buổi sáng ở Đà Nẵng."
+  },
+  {
+    "file": "da-nang-img_3785.jpg",
+    "alt": "Hai bạn đội mũ bảo hiểm với thành phố Đà Nẵng sáng đèn phía sau",
+    "caption": "Thành phố sáng đèn phía sau.\nHai đứa ở trong cùng một tấm hình.",
+    "note": "04.09.2026 · Đà Nẵng về đêm."
+  },
+  {
     "file": "nha-minh-co-sua.jpg",
-    "alt": "Hai bạn và Sữa cùng chụp ảnh",
-    "caption": "Hai người, một vòng tay.\nVà Sữa ở giữa.",
-    "note": "Có những tấm hình khiến anh muốn giữ nguyên một ngày, cả ánh sáng lẫn những người trong đó."
-  },
-  {
-    "file": "chung-khung-hinh.jpg",
-    "alt": "Hai bạn chụp chung trong gương",
-    "caption": "Gương giữ bóng hình.\nAnh giữ ngày có em.",
-    "note": "Trong ô gương ấy, hai đứa đứng gần nhau. Anh muốn năm tháng sau này vẫn còn những tấm hình như thế."
-  },
-  {
-    "file": "gan-nhau.jpg",
-    "alt": "Mox và Tuấn Minh tựa gần bên nhau",
-    "caption": "Xin giờ khắc chậm trôi.\nEm đang ở rất gần.",
-    "note": "Nếu có thể giữ một khoảng yên giữa dòng ngày vội vã, anh muốn giữ lúc ngồi cạnh em."
-  },
-  {
-    "file": "hai-dua.jpg",
-    "alt": "Hai bạn chụp dưới ánh đèn xanh",
-    "caption": "Đêm khoác màu xanh.\nHai đứa ở trong cùng ánh sáng.",
-    "note": "Ánh đèn nhuộm khác gương mặt mình. Còn người anh muốn đứng cạnh vẫn là em."
-  },
-  {
-    "file": "mot-ngay-ben-em.jpg",
-    "alt": "Mox và Tuấn Minh cùng chụp ảnh",
-    "caption": "Thêm một ngày đi qua.\nThêm một lần muốn giữ.",
-    "note": "Mong những năm chưa tới cũng để lại cho mình nhiều tấm hình, để tuổi nào nhìn lại cũng thấy có nhau."
+    "alt": "Mox, Tuấn Minh và Sữa cùng chụp ảnh",
+    "caption": "Đi đâu rồi cũng muốn\ncó một tấm hình đủ cả ba.",
+    "note": "Mox · Tuấn Minh · Sữa. Một khung hình của nhà mình."
   }
 ];
   let current=0;

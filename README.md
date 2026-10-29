@@ -27,20 +27,26 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1
 
 Java thực hiện đọc cấu hình, tạo HTML, dựng album, kiểm tra dữ liệu, xuất trang tĩnh và chạy HTTP server. Giao diện trình duyệt dùng HTML/CSS và JavaScript cho hiệu ứng, bộ đếm, âm thanh và tương tác; trình duyệt không chạy Java trực tiếp. Cloudflare Pages phục vụ bản tĩnh do Java tạo, không chạy máy chủ Java.
 
-## Thêm ảnh sau khi backup
+## Album và dòng thời gian
 
-1. Tạo thư mục `web/assets/photos`, chép ảnh `.jpg`, `.png` hoặc `.webp` vào đó.
-2. Thêm dòng vào `config/photos.tsv`, mỗi cột cách bằng **Tab**:
+Album có **23 ảnh**, chia thành 7 chặng: Hội An 2025, những ngày có Sữa, Huế, rừng dừa Bảy Mẫu, Hội An 2026, Đà Nẵng và những ngày bình thường. Các chặng và ảnh được Java sắp theo ngày chụp. Ngày ảnh mới lấy từ EXIF hoặc thông tin hiển thị trong Google Photos; 5 ảnh cũ chưa có ngày được giữ ở chặng cuối, không tự gán ngày.
+
+Dùng bộ lọc địa điểm hoặc bộ lọc hai đứa / có Sữa; bấm ảnh để xem lớn, dùng phím trái/phải để chuyển ảnh và Escape để đóng. Cuộn phim có 8 khung hình đại diện các chặng. Ảnh lưu cùng dự án nên người xem không cần đăng nhập Google Photos.
+
+Để thêm ảnh:
+
+1. Chép bản ảnh dùng cho web vào `web/assets/photos/`.
+2. Khai báo chặng trong `config/events.tsv` với 4 cột cách nhau bằng Tab: mã chặng, địa điểm, tiêu đề, lời dẫn.
+3. Thêm dòng vào `config/photos.tsv` với 5 cột: tên tệp, chú thích, loại ảnh, ngày `yyyy-MM-dd` (có thể để trống), mã chặng.
 
 ```text
-hai-dua.jpg	Một ngày có nhau	couple
-ca-ba.jpg	Gia đình nhỏ	family
-sua.jpg	Vệ tinh đáng yêu	pet
+hoi-an.jpg	Hai đứa dưới đèn lồng.	couple	2026-09-03	hoi-an-2026
+sua.jpg	Sữa với chiếc khăn đỏ.	pet	2026-01-21	sua
 ```
 
-3. Chạy lại build hoặc run. Album tự xuất hiện; bộ lọc, phóng to, phím trái/phải và Escape đã có sẵn.
+Loại ảnh hỗ trợ: `couple`, `family`, `pet`, `portrait`. Dòng 3 cột cũ vẫn được đọc vào chặng `everyday`. Chạy lại build sau khi sửa dữ liệu. Java kiểm tra ngày, mã chặng và tệp ảnh.
 
-Đã tích hợp 5 ảnh được chọn và tải về trước khi chờ backup: 4 ảnh hai bạn, 1 ảnh có cả Sữa. Có thể thêm ảnh mới theo hướng dẫn trên. Trang dùng ảnh lưu cùng dự án, không cần tài khoản Google của người xem. Màu phim là lớp hiển thị CSS; nút "Màu phim / xem ảnh gốc" đổi qua lại. Khi mở ảnh toàn màn hình sẽ thấy ảnh gốc, các tập tin ảnh được giữ nguyên.
+Ảnh mới được xuất JPEG tối đa 1800 px, bỏ metadata vị trí và tối ưu dung lượng trước khi đưa lên web. Màu phim chỉ là lớp hiển thị; nút màu ảnh và chế độ xem lớn cho phép xem ảnh không phủ màu phim. Tệp gốc tải về không bị chỉnh sửa.
 
 ## Cá nhân hóa
 
