@@ -14,10 +14,10 @@
   });
   const scenes=[
   {
-    "file": "hoi-an-img_1894.jpg",
-    "alt": "Mox và Tuấn Minh chụp chung tại Hội An năm 2025",
-    "caption": "Hội An, năm 2025.\nHai đứa đứng trong cùng khung hình.",
-    "note": "02.09.2025 · Một kỷ niệm của hai đứa ở Hội An."
+    "file": "thang-long-img_1894.jpg",
+    "alt": "Mox và Tuấn Minh chụp chung tại Hoàng thành Thăng Long",
+    "caption": "Hoàng thành Thăng Long, năm 2025.\nHai đứa đứng trong cùng khung hình.",
+    "note": "02.09.2025 · Một kỷ niệm của hai đứa ở Hoàng thành Thăng Long."
   },
   {
     "file": "sua-img_2683.jpg",
@@ -27,9 +27,9 @@
   },
   {
     "file": "hue-img_3687.jpg",
-    "alt": "Mox mặc áo dài trước kiến trúc cổ ở Huế",
-    "caption": "Huế, một sáng tháng Chín.\nEm trong tà áo dài.",
-    "note": "02.09.2026 · Anh giữ lại dáng em giữa một khoảng sân cũ."
+    "alt": "Áo dài giữa sân Huế",
+    "caption": "Huế, một sáng tháng Chín.\nÁo dài giữa sân cũ.",
+    "note": "02.09.2026 · Một ngày tháng Chín được giữ lại."
   },
   {
     "file": "bay-mau-img_3724.jpg",
