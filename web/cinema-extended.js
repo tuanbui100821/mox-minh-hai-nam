@@ -32,10 +32,10 @@
     "note": "Huế · Hai đứa mặc áo dài, chụp chung thêm một tấm."
   },
   {
-    "file": "bay-mau-img_3724.jpg",
-    "alt": "Mox và Tuấn Minh đội nón ngồi trên thuyền ở rừng dừa Bảy Mẫu",
-    "caption": "Hai đứa ngồi thuyền.\nTấm này đang nhìn nhau.",
-    "note": "03.09.2026 · Rừng dừa Bảy Mẫu."
+    "file": "bay-mau-img_3747.jpg",
+    "alt": "Mox và Tuấn Minh đội nón và ghép tay thành hình trái tim trên thuyền thúng ở Bảy Mẫu",
+    "caption": "Bác lo chèo thuyền.\nHai đứa lo tạo dáng.",
+    "note": "03.09.2026 · Rừng dừa Bảy Mẫu. Ghép tim trên thuyền, độ khó tăng nhẹ."
   },
   {
     "file": "hoi-an-img_3760.jpg",
