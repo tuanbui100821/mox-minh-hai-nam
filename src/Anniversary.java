@@ -69,6 +69,7 @@ public final class Anniversary {
                     }
                     for (String key : p.stringPropertyNames()) html = html.replace("{{" + key + "}}", escape(p.getProperty(key)));
                     html = html.replace("{{anniversaryDate}}", start.plusYears(2).toString())
+                        .replace("{{anniversaryDays}}", Long.toString(java.time.temporal.ChronoUnit.DAYS.between(start, start.plusYears(2))))
                         .replace("{{startDisplay}}", display(start)).replace("{{firstDisplay}}", display(start.plusYears(1)))
                         .replace("{{secondDisplay}}", display(start.plusYears(2))).replace("{{photos}}", gallery(root))
                         .replace("{{journeyTimeline}}", journeyTimeline(root)).replace("{{eventOptions}}", eventOptions(root));
@@ -86,7 +87,7 @@ public final class Anniversary {
         LocalDate lastDate() { return photos.stream().map(MemoryPhoto::date).filter(Objects::nonNull).max(LocalDate::compareTo).orElse(null); }
         String dateLabel() {
             LocalDate first = firstDate(), last = lastDate();
-            return first == null ? "NHỮNG NGÀY Ở CẠNH NHAU" : first.equals(last) ? display(first) : display(first) + " — " + display(last);
+            return first == null ? "ẢNH CHƯA GHI NGÀY" : first.equals(last) ? display(first) : display(first) + " — " + display(last);
         }
     }
     private static List<MemoryChapter> memoryChapters(Path root) throws IOException {
@@ -94,6 +95,7 @@ public final class Anniversary {
         for (String row : Files.readAllLines(root.resolve("config/events.tsv"), UTF8)) {
             if (row.isBlank() || row.startsWith("#")) continue;
             String[] fields = row.split("\t", -1);
+            if (fields.length == 3) fields = new String[] {fields[0], fields[1], fields[2], ""};
             if (fields.length != 4 || !fields[0].matches("[a-z0-9-]+") || events.putIfAbsent(fields[0], fields) != null)
                 throw new IllegalArgumentException("Invalid or duplicate event: " + row);
         }
@@ -137,7 +139,7 @@ public final class Anniversary {
         return html.append("</ol>").toString();
     }
     private static String eventOptions(Path root) throws IOException {
-        StringBuilder html = new StringBuilder("<option value=\"all\">Tất cả các chặng</option>");
+        StringBuilder html = new StringBuilder("<option value=\"all\">Tất cả các mục</option>");
         for (MemoryChapter chapter : memoryChapters(root)) html.append("<option value=\"").append(chapter.id()).append("\">")
             .append(escape(chapter.place())).append(chapter.firstDate() == null ? "" : " · " + chapter.firstDate().getYear()).append("</option>");
         return html.toString();
@@ -148,15 +150,16 @@ public final class Anniversary {
             html.append("<article class=\"memory-chapter\" id=\"memory-").append(chapter.id()).append("\" data-event=\"").append(chapter.id())
                 .append("\" aria-labelledby=\"chapter-title-").append(chapter.id()).append("\"><div class=\"chapter-date\"><span class=\"chapter-pin\" aria-hidden=\"true\"></span><span>")
                 .append(escape(chapter.dateLabel())).append("</span><small>").append(escape(chapter.place())).append("</small></div><div class=\"chapter-body\"><header class=\"chapter-heading\"><div><h3 id=\"chapter-title-")
-                .append(chapter.id()).append("\">").append(escape(chapter.title())).append("</h3><p>").append(escape(chapter.note()))
-                .append("</p></div><span class=\"chapter-count\">").append(chapter.photos().size()).append(" khung hình</span></header><div class=\"chapter-photos")
+                .append(chapter.id()).append("\">").append(escape(chapter.title())).append("</h3>");
+            if (!chapter.note().isBlank()) html.append("<p>").append(escape(chapter.note())).append("</p>");
+            html.append("</div><span class=\"chapter-count\">").append(chapter.photos().size()).append(" ảnh</span></header><div class=\"chapter-photos")
                 .append(chapter.photos().size() == 1 ? " single" : chapter.photos().size() == 2 ? " duet" : "").append("\">");
             for (MemoryPhoto photo : chapter.photos()) {
                 var dimensions = javax.imageio.ImageIO.read(photoPath(root, photo.file()).toFile());
                 if (dimensions == null) throw new IllegalArgumentException("Unsupported image: " + photo.file());
                 int width = dimensions.getWidth(), height = dimensions.getHeight();
                 String date = photo.date() == null ? "" : display(photo.date());
-                String caption = photo.caption() + (date.isBlank() ? "" : " · " + date) + " · " + chapter.place();
+                String caption = photo.caption() + (date.isBlank() ? "" : " · " + date);
                 html.append("<button class=\"photo-card ").append(width > height ? "landscape" : "portrait").append("\" data-category=\"").append(photo.category())
                     .append("\" data-event=\"").append(chapter.id()).append("\" data-date=\"").append(photo.date() == null ? "" : photo.date()).append("\" data-photo=\"")
                     .append(photoUrl(photo.file())).append("\" data-caption=\"").append(escape(caption)).append("\"><img loading=\"lazy\" decoding=\"async\" src=\"")

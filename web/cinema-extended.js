@@ -9,57 +9,57 @@
       // Selecting a colour world also turns the film display back on.
       document.body.classList.remove('original-photos');
       const toggle=$('#film-look');toggle.setAttribute('aria-pressed','true');
-      toggle.replaceChildren(document.createTextNode('◉ Màu phim '));const hint=document.createElement('span');hint.textContent='/ xem ảnh gốc';toggle.append(hint);
+      toggle.replaceChildren(document.createTextNode('◉ Màu ảnh '));const hint=document.createElement('span');hint.textContent='/ xem ảnh gốc';toggle.append(hint);
     });
   });
   const scenes=[
   {
     "file": "thang-long-img_1894.jpg",
     "alt": "Mox và Tuấn Minh chụp chung tại Hoàng thành Thăng Long",
-    "caption": "Hôm đi Hoàng thành.\nHai đứa mặc áo giống nhau.",
-    "note": "02.09.2025 · Hoàng thành Thăng Long."
+    "caption": "Đi chơi mà mặc như đi đá bóng.",
+    "note": "02.09.2025 · Hoàng thành Thăng Long"
   },
   {
     "file": "sua-img_2683.jpg",
-    "alt": "Sữa được ôm với chiếc khăn đỏ",
-    "caption": "Sữa đeo khăn đỏ.\nChụp riêng cho Sữa một tấm.",
-    "note": "21.01.2026 · Sữa."
+    "alt": "Sữa mặc áo đỏ",
+    "caption": "Mặc áo đỏ, được bế, rất hợp tác.",
+    "note": "21.01.2026"
   },
   {
     "file": "hue-arch-img_3829.jpg",
     "alt": "Hai đứa mặc áo dài và nhìn nhau dưới vòm cổng ở Huế",
-    "caption": "Hai đứa dưới cổng ở Huế.\nTấm này đang nhìn nhau.",
-    "note": "Huế · Hai đứa mặc áo dài, chụp chung thêm một tấm."
+    "caption": "Tấm trước nhìn máy, tấm này nhìn nhau.",
+    "note": "Huế"
   },
   {
     "file": "bay-mau-img_3747.jpg",
     "alt": "Mox và Tuấn Minh đội nón và ghép tay thành hình trái tim trên thuyền thúng ở Bảy Mẫu",
-    "caption": "Bác lo chèo thuyền.\nHai đứa lo tạo dáng.",
-    "note": "03.09.2026 · Rừng dừa Bảy Mẫu. Ghép tim trên thuyền, độ khó tăng nhẹ."
+    "caption": "Hai đứa góp tay mới được cái tim.",
+    "note": "03.09.2026 · Bảy Mẫu"
   },
   {
     "file": "hoi-an-img_3760.jpg",
     "alt": "Hai bạn chụp chung dưới đèn lồng ở Hội An",
-    "caption": "Hội An buổi tối.\nChụp chung dưới đèn lồng.",
-    "note": "03.09.2026 · Hội An."
+    "caption": "Đèn lồng nhiều, ảnh hai đứa cũng nhiều.",
+    "note": "03.09.2026 · Hội An"
   },
   {
     "file": "da-nang-img_3773.jpg",
     "alt": "Hai bạn chụp chung bên biển lúc bình minh ở Đà Nẵng",
-    "caption": "Hai đứa ra biển\nlúc trời vừa sáng.",
-    "note": "04.09.2026 · Đà Nẵng."
+    "caption": "Em chụp ảnh, anh ngắm biển.",
+    "note": "04.09.2026 · Đà Nẵng"
   },
   {
     "file": "da-nang-img_3785.jpg",
     "alt": "Hai bạn đội mũ bảo hiểm với thành phố Đà Nẵng sáng đèn phía sau",
-    "caption": "Đà Nẵng lên đèn.\nHai đứa chụp thêm một tấm.",
-    "note": "04.09.2026 · Đà Nẵng."
+    "caption": "Cảnh đẹp phía sau, hai cái mũ phía trước.",
+    "note": "04.09.2026 · Đà Nẵng"
   },
   {
     "file": "nha-minh-co-sua.jpg",
     "alt": "Mox, Tuấn Minh và Sữa cùng chụp ảnh",
-    "caption": "Có cả Sữa nữa.\nChụp đủ ba một tấm.",
-    "note": "Mox, Tuấn Minh và Sữa."
+    "caption": "Chụp hai người, thành ra ba.",
+    "note": "Mox · Tuấn Minh · Sữa"
   }
 ];
   let current=0;

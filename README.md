@@ -1,6 +1,6 @@
 # Những ngày có em — gửi Mox
 
-Món quà kỷ niệm dành cho **Mox × Đại Đế Tuấn Minh**, từ **25/11/2024**, và bé **Sữa**. Bản dài mang hai sắc thái điện ảnh Hồng Kông: đỏ rượu–hổ phách–ô liu và xanh ngọc–cyan–vàng neon. Giữ lời nhắn **kiss RockKiss**, lá thư riêng và khung hình dành cho ngày mai.
+Món quà kỷ niệm dành cho **Mox × Đại Đế Tuấn Minh**, từ **25/11/2024**, và bé **Sữa**. Bản dài mang hai sắc thái điện ảnh Hồng Kông: đỏ rượu–hổ phách–ô liu và xanh ngọc–cyan–vàng neon. Giữ lời nhắn **kiss Rockiss**, lá thư riêng và khung hình dành cho ngày mai.
 
 Trang có thêm chiếc vé ngày bắt đầu, cảnh phòng đỏ, cảnh phố xanh, cuộn ảnh chuyển tay kèm lời kể, bốn mẩu nhắn mở riêng, danh sách những điều mong được làm cùng nhau và cảnh sau phần kết. Các mẩu nhắn và kế hoạch tương lai là lời viết gợi ý, không gán những kỷ niệm chưa được cung cấp cho hai bạn.
 
@@ -36,7 +36,7 @@ Dùng bộ lọc địa điểm hoặc bộ lọc hai đứa / có Sữa; bấm 
 Để thêm ảnh:
 
 1. Chép bản ảnh dùng cho web vào `web/assets/photos/`.
-2. Khai báo chặng trong `config/events.tsv` với 4 cột cách nhau bằng Tab: mã chặng, địa điểm, tiêu đề, lời dẫn.
+2. Khai báo mục ảnh trong `config/events.tsv` với 3 cột cách nhau bằng Tab: mã mục, địa điểm, tiêu đề. Có thể thêm lời dẫn ở cột thứ tư nếu cần.
 3. Thêm dòng vào `config/photos.tsv` với 5 cột: tên tệp, chú thích, loại ảnh, ngày `yyyy-MM-dd` (có thể để trống), mã chặng.
 
 ```text
@@ -52,7 +52,9 @@ Loại ảnh hỗ trợ: `couple`, `family`, `pet`, `portrait`. Dòng 3 cột c�
 
 Sửa `config/anniversary.properties` (UTF-8) để đổi biệt danh, tên Sữa và ngày bắt đầu. Nội dung thư ở `web/index.html`, các cảnh bổ sung ở `content/`. Thư hiện là lời nhắn viết sẵn, có thể chỉnh lại trước khi gửi Mox. Bấm "Đọc thư anh viết" để mở thư; đây là hiệu ứng giao diện, không phải mật khẩu bảo vệ nội dung.
 
-Ngày bên nhau tính từ 00:00 ngày 25/11/2024 theo UTC+7. Mốc hai năm là 25/11/2026. Nhạc nền “I Love You Baby” được tách nguyên luồng âm thanh từ video người dùng cung cấp, lưu tại `web/assets/audio/i-love-you-baby.m4a`. Bấm nút nhạc để phát hoặc tạm dừng; bài phát lặp ở âm lượng 28% và tiếp tục tại vị trí đang nghe khi bật lại. Trang không tải nhạc trước khi bấm phát. Phông Google Fonts cần mạng; có phông dự phòng khi ngoại tuyến. Hiệu ứng tôn trọng chế độ giảm chuyển động.
+Phần ngày bên nhau hiển thị trọn hai năm: **730 ngày**, từ 25/11/2024 đến 25/11/2026. Java tính số ngày theo ngày bắt đầu trong cấu hình và mốc cộng hai năm khi build; trang không đếm ngược theo ngày hiện tại. Trang mở bằng bìa phim “Những ngày có em”, với nút **Mở cuốn phim**. Một lần bấm sẽ mở câu chuyện và phát nhạc cùng lúc, ngay trong trang hiện tại để giữ quyền phát âm thanh của trình duyệt. Màn mở đầu hỗ trợ chuột, cảm ứng và bàn phím; chuyển cảnh tôn trọng chế độ giảm chuyển động.
+
+Nhạc nền “I Love You Baby” được tách nguyên luồng âm thanh từ video người dùng cung cấp, lưu tại `web/assets/audio/i-love-you-baby.m4a` và tải trước khi mở phim. Bấm nút nhạc để phát hoặc tạm dừng; bài phát lặp ở âm lượng 28% và tiếp tục tại vị trí đang nghe khi bật lại. Sau khi người xem chủ động tắt, tương tác khác không tự bật nhạc lại. Phông Google Fonts cần mạng; có phông dự phòng khi ngoại tuyến. Hiệu ứng tôn trọng chế độ giảm chuyển động.
 
 ## Cloudflare Pages
 

@@ -2,20 +2,11 @@
   'use strict';
   const $ = selector => document.querySelector(selector);
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const start = new Date(document.body.dataset.start + 'T00:00:00+07:00');
-  const anniversary = new Date(document.body.dataset.anniversary + 'T00:00:00+07:00');
-  const dateText = new Intl.DateTimeFormat('en-GB', {day:'2-digit',month:'2-digit',year:'numeric',timeZone:'Asia/Bangkok'}).format(anniversary).replaceAll('/', '.');
-  function updateDays() {
-    $('#days').textContent = Math.max(0, Math.floor((Date.now() - start.getTime()) / 86400000)).toLocaleString('vi-VN');
-    const left = Math.ceil((anniversary.getTime() - Date.now()) / 86400000);
-    $('#anniversary-status').textContent = left > 0 ? `${dateText}. Còn ${left} ngày đến hai năm.` : `${dateText}. Hai năm. Mình vẫn đi tiếp.`;
-  }
-  updateDays(); setInterval(updateDays, 60000);
   $('#film-look').addEventListener('click', () => {
     const original = document.body.classList.toggle('original-photos');
     $('#film-look').setAttribute('aria-pressed',String(!original));
-    $('#film-look').replaceChildren(document.createTextNode(original ? '◉ Ảnh gốc ' : '◉ Màu phim '));
-    const hint = document.createElement('span'); hint.textContent = original ? '/ trở lại màu phim' : '/ xem ảnh gốc'; $('#film-look').append(hint);
+    $('#film-look').replaceChildren(document.createTextNode(original ? '◉ Ảnh gốc ' : '◉ Màu ảnh '));
+    const hint = document.createElement('span'); hint.textContent = original ? '/ đổi màu ảnh' : '/ xem ảnh gốc'; $('#film-look').append(hint);
   });
   const cards = [...document.querySelectorAll('#gallery [data-photo]')];
   let activeIndex = 0, activePhotos = [];
@@ -33,12 +24,12 @@
       chapter.hidden = visible === 0;
       chapter.querySelector('.chapter-photos').classList.toggle('single',visible === 1);
       chapter.querySelector('.chapter-photos').classList.toggle('duet',visible === 2);
-      chapter.querySelector('.chapter-count').textContent = visible + ' khung hình';
+      chapter.querySelector('.chapter-count').textContent = visible + ' ảnh';
       if (visible) chapterCount++;
     });
     const visibleCount = cards.filter(card => !card.hidden).length;
     $('#filter-empty').hidden = visibleCount > 0;
-    $('#photo-count').textContent = visibleCount + ' ảnh · ' + chapterCount + ' chặng';
+    $('#photo-count').textContent = visibleCount + ' ảnh · ' + chapterCount + ' mục';
   }
   document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
     categoryFilter = button.dataset.filter;
@@ -86,7 +77,7 @@
     $('#letter-content').hidden = true; $('#envelope-front').hidden = false; $('#seal').focus({preventScroll:true});
     $('#envelope').scrollIntoView({behavior:reducedMotion?'instant':'smooth',block:'center'});
   });
-  const hugs = ['Lại gần anh, cho đêm bớt rộng.', 'Giờ khắc cứ trôi. Mình ở đây thêm một chút.', 'kiss RockKiss. Anh vẫn chọn em.'];
+  const hugs = ['Cho anh ôm một cái nhé.', 'Cảm ơn em vì đã ở bên anh.', 'kiss Rockiss. Thương em.'];
   let sent = 0;
   $('#send-kiss').addEventListener('click', () => { burst($('#send-kiss')); $('#kiss-message').textContent = hugs[sent++ % hugs.length]; });
   const music = $('#background-music'), sound = $('#sound'), soundLabel = $('.sound-label');
@@ -102,17 +93,41 @@
   music.addEventListener('error',() => {
     syncSoundState(); soundLabel.textContent = 'thử bật nhạc lại';
   });
-  sound.addEventListener('click',async () => {
-    if (!music.paused) { music.pause(); return; }
-    sound.disabled = true; sound.setAttribute('aria-busy','true');
+  async function startMusic() {
     try {
       if (music.error) music.load();
       await music.play();
-    } catch {
-      syncSoundState(); soundLabel.textContent = 'thử bật nhạc lại';
-    } finally {
-      sound.disabled = false; sound.removeAttribute('aria-busy');
+    } catch (error) {
+      syncSoundState();
+      if (error.name === 'AbortError') return;
+      soundLabel.textContent = error.name === 'NotAllowedError' ? 'chạm để bật nhạc' : 'thử bật nhạc lại';
     }
+  }
+  sound.addEventListener('click',() => {
+    if (!music.paused) { music.pause(); return; }
+    startMusic();
   });
   syncSoundState();
+  const premiere = $('#premiere'), openFilm = $('#open-film'), film = $('#film-content');
+  openFilm.disabled = false;
+  openFilm.addEventListener('click',() => {
+    // Keep playback in this click's user activation, before any transition or navigation.
+    startMusic();
+    openFilm.disabled = true;
+    film.hidden = false;
+    film.inert = false;
+    document.body.classList.remove('awaiting-premiere');
+    window.scrollTo({top:0,behavior:'instant'});
+    $('#story').focus({preventScroll:true});
+    premiere.inert = true;
+    premiere.setAttribute('aria-hidden','true');
+    premiere.classList.add('is-opening');
+    if (reducedMotion) premiere.hidden = true;
+    else {
+      premiere.addEventListener('transitionend',event => {
+        if (event.target === premiere) premiere.hidden = true;
+      },{once:true});
+      setTimeout(() => { premiere.hidden = true; },1000);
+    }
+  },{once:true});
 })();
