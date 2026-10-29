@@ -1,0 +1,10 @@
+build/
+dist/
+*.zip
+preview-*.jpg
+node_modules/
+.wrangler/
+.env
+.env.*
+.dev.vars
+.openai/.state/
