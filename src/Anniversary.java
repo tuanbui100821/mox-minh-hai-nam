@@ -150,7 +150,7 @@ public final class Anniversary {
                 .append(escape(chapter.dateLabel())).append("</span><small>").append(escape(chapter.place())).append("</small></div><div class=\"chapter-body\"><header class=\"chapter-heading\"><div><h3 id=\"chapter-title-")
                 .append(chapter.id()).append("\">").append(escape(chapter.title())).append("</h3><p>").append(escape(chapter.note()))
                 .append("</p></div><span class=\"chapter-count\">").append(chapter.photos().size()).append(" khung hình</span></header><div class=\"chapter-photos")
-                .append(chapter.photos().size() == 1 ? " single" : "").append("\">");
+                .append(chapter.photos().size() == 1 ? " single" : chapter.photos().size() == 2 ? " duet" : "").append("\">");
             for (MemoryPhoto photo : chapter.photos()) {
                 var dimensions = javax.imageio.ImageIO.read(photoPath(root, photo.file()).toFile());
                 if (dimensions == null) throw new IllegalArgumentException("Unsupported image: " + photo.file());

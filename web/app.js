@@ -32,6 +32,7 @@
       const visible = [...chapter.querySelectorAll('[data-photo]')].filter(card => !card.hidden).length;
       chapter.hidden = visible === 0;
       chapter.querySelector('.chapter-photos').classList.toggle('single',visible === 1);
+      chapter.querySelector('.chapter-photos').classList.toggle('duet',visible === 2);
       chapter.querySelector('.chapter-count').textContent = visible + ' khung hình';
       if (visible) chapterCount++;
     });
