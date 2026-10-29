@@ -61,13 +61,23 @@ java -cp build/classes Anniversary build .
 Đặt thư mục đầu ra là `dist`. Nếu môi trường build không có JDK, dùng bản build sẵn trên máy qua Direct Upload. Bản hiện tại đã được triển khai tại **https://mox-minh-hai-nam.pages.dev/**. Mã nguồn nằm trong kho riêng tư **https://github.com/tuanbui100821/mox-minh-hai-nam**.
 
 
-### Cập nhật bản chạy
+### Tự động cập nhật từ GitHub
 
-Cloudflare Pages dùng Direct Upload. Đẩy code lên GitHub chưa tự triển khai website. Sau khi sửa nội dung hoặc thêm ảnh, build lại rồi dùng Wrangler đã đăng nhập:
+Mỗi lần push lên nhánh `main` của kho `tuanbui100821/mox-minh-hai-nam`, GitHub Actions chạy `.github/workflows/deploy-pages.yml` để:
+
+1. Lấy đúng mã nguồn của commit vừa push.
+2. Cài Java 17 và build trang tĩnh vào `dist/`.
+3. Dùng Wrangler triển khai lên **https://mox-minh-hai-nam.pages.dev/**.
+
+Theo dõi kết quả ở https://github.com/tuanbui100821/mox-minh-hai-nam/actions. Có thể bấm **Run workflow** để chạy lại trên nhánh `main`.
+
+Dự án Cloudflare giữ kiểu Direct Upload và được GitHub Actions cập nhật tự động. Không cần tạo lại dự án hoặc đổi địa chỉ. Kho GitHub vẫn riêng tư; website là đường dẫn công khai. Trang `lilmox.pages.dev` trước đó không bị thay đổi.
+
+GitHub Secrets của kho chứa `CLOUDFLARE_ACCOUNT_ID` và `CLOUDFLARE_API_TOKEN`. Token chỉ có quyền Cloudflare Pages: Edit trong tài khoản đã chọn và hết hạn ngày **29/10/2027**. Gia hạn hoặc thay token trong Secrets trước ngày đó để tiếp tục triển khai. Không đưa giá trị token vào mã nguồn.
+
+Có thể triển khai thủ công trên máy khi cần:
 
 ```powershell
 .\build.ps1
 npx wrangler pages deploy dist --project-name mox-minh-hai-nam --branch main
 ```
-
-Hoặc tải bản ZIP chứa nội dung `dist/` từ Cloudflare Dashboard. Website là đường dẫn công khai; kho GitHub vẫn riêng tư. Trang `lilmox.pages.dev` trước đó không bị thay đổi.
