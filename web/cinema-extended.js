@@ -16,50 +16,50 @@
   {
     "file": "thang-long-img_1894.jpg",
     "alt": "Mox và Tuấn Minh chụp chung tại Hoàng thành Thăng Long",
-    "caption": "Hoàng thành Thăng Long, năm 2025.\nHai đứa đứng trong cùng khung hình.",
-    "note": "02.09.2025 · Một kỷ niệm của hai đứa ở Hoàng thành Thăng Long."
+    "caption": "Hôm đi Hoàng thành.\nHai đứa mặc áo giống nhau.",
+    "note": "02.09.2025 · Hoàng thành Thăng Long."
   },
   {
     "file": "sua-img_2683.jpg",
     "alt": "Sữa được ôm với chiếc khăn đỏ",
-    "caption": "Sữa và chiếc khăn đỏ.\nMột chỗ nhỏ trong câu chuyện của mình.",
-    "note": "21.01.2026 · Có thêm một vai diễn mang tên Sữa."
+    "caption": "Sữa đeo khăn đỏ.\nChụp riêng cho Sữa một tấm.",
+    "note": "21.01.2026 · Sữa."
   },
   {
     "file": "hue-close-img_3647.jpg",
     "alt": "Hai đứa chụp gần trong buổi tối ở Huế",
-    "caption": "Huế, một buổi tối.\nChụp gần thêm một chút.",
-    "note": "01.09.2026 · Hai đứa trong cùng một khung hình."
+    "caption": "Tối ở Huế.\nHai đứa chụp chung một tấm.",
+    "note": "01.09.2026 · Huế."
   },
   {
     "file": "bay-mau-img_3724.jpg",
     "alt": "Mox và Tuấn Minh đội nón ngồi trên thuyền ở rừng dừa Bảy Mẫu",
-    "caption": "Hai chiếc nón, một chuyến thuyền.\nNgoảnh sang, thấy em đang cười.",
+    "caption": "Hai đứa ngồi thuyền.\nTấm này đang nhìn nhau.",
     "note": "03.09.2026 · Rừng dừa Bảy Mẫu."
   },
   {
     "file": "hoi-an-img_3760.jpg",
     "alt": "Hai bạn chụp chung dưới đèn lồng ở Hội An",
-    "caption": "Phố lên đèn.\nMình vẫn đứng cạnh nhau.",
-    "note": "03.09.2026 · Buổi tối ở Hội An."
+    "caption": "Hội An buổi tối.\nChụp chung dưới đèn lồng.",
+    "note": "03.09.2026 · Hội An."
   },
   {
     "file": "da-nang-img_3773.jpg",
     "alt": "Hai bạn chụp chung bên biển lúc bình minh ở Đà Nẵng",
-    "caption": "Trời vừa sáng.\nHai đứa ở bên biển.",
-    "note": "04.09.2026 · Một buổi sáng ở Đà Nẵng."
+    "caption": "Hai đứa ra biển\nlúc trời vừa sáng.",
+    "note": "04.09.2026 · Đà Nẵng."
   },
   {
     "file": "da-nang-img_3785.jpg",
     "alt": "Hai bạn đội mũ bảo hiểm với thành phố Đà Nẵng sáng đèn phía sau",
-    "caption": "Thành phố sáng đèn phía sau.\nHai đứa ở trong cùng một tấm hình.",
-    "note": "04.09.2026 · Đà Nẵng về đêm."
+    "caption": "Đà Nẵng lên đèn.\nHai đứa chụp thêm một tấm.",
+    "note": "04.09.2026 · Đà Nẵng."
   },
   {
     "file": "nha-minh-co-sua.jpg",
     "alt": "Mox, Tuấn Minh và Sữa cùng chụp ảnh",
-    "caption": "Đi đâu rồi cũng muốn\ncó một tấm hình đủ cả ba.",
-    "note": "Mox · Tuấn Minh · Sữa. Một khung hình của nhà mình."
+    "caption": "Có cả Sữa nữa.\nChụp đủ ba một tấm.",
+    "note": "Mox, Tuấn Minh và Sữa."
   }
 ];
   let current=0;
