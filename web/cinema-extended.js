@@ -26,10 +26,10 @@
     "note": "21.01.2026 · Sữa."
   },
   {
-    "file": "hue-close-img_3647.jpg",
-    "alt": "Hai đứa chụp gần trong buổi tối ở Huế",
-    "caption": "Tối ở Huế.\nHai đứa chụp chung một tấm.",
-    "note": "01.09.2026 · Huế."
+    "file": "hue-arch-img_3829.jpg",
+    "alt": "Hai đứa mặc áo dài và nhìn nhau dưới vòm cổng ở Huế",
+    "caption": "Hai đứa dưới cổng ở Huế.\nTấm này đang nhìn nhau.",
+    "note": "Huế · Hai đứa mặc áo dài, chụp chung thêm một tấm."
   },
   {
     "file": "bay-mau-img_3724.jpg",
