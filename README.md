@@ -29,7 +29,7 @@ Java thực hiện đọc cấu hình, tạo HTML, dựng album, kiểm tra dữ
 
 ## Album và dòng thời gian
 
-Album có **21 ảnh**, chia thành 7 chặng: Hoàng thành Thăng Long 2025, những ngày có Sữa, Huế, rừng dừa Bảy Mẫu, Hội An 2026, Đà Nẵng và những ngày bình thường. Huế có 2 ảnh chụp chung của hai bạn. Album chỉ giữ ảnh đôi, ảnh cùng Sữa và ảnh riêng của Sữa; bỏ các ảnh chụp riêng từng người. Các chặng và ảnh được Java sắp theo ngày chụp. Ngày ảnh mới lấy từ EXIF hoặc thông tin hiển thị trong Google Photos; 5 ảnh cũ chưa có ngày được giữ ở chặng cuối, không tự gán ngày.
+Album có **23 ảnh**, chia thành 7 chặng: Hoàng thành Thăng Long 2025, những ngày có Sữa, Huế, rừng dừa Bảy Mẫu, Hội An 2026, Đà Nẵng và những ngày bình thường. Huế có 4 ảnh chụp chung của hai bạn, gồm 2 ảnh chụp gần trong tối 01/09 và 2 ảnh toàn cảnh sáng 02/09/2026. Album chỉ giữ ảnh đôi, ảnh cùng Sữa và ảnh riêng của Sữa; bỏ các ảnh chụp riêng từng người. Các chặng và ảnh được Java sắp theo ngày chụp. Ngày ảnh mới lấy từ EXIF hoặc thông tin hiển thị trong Google Photos; 5 ảnh cũ chưa có ngày được giữ ở chặng cuối, không tự gán ngày.
 
 Dùng bộ lọc địa điểm hoặc bộ lọc hai đứa / có Sữa; bấm ảnh để xem lớn, dùng phím trái/phải để chuyển ảnh và Escape để đóng. Cuộn phim có 8 khung hình đại diện các chặng. Ảnh lưu cùng dự án nên người xem không cần đăng nhập Google Photos.
 

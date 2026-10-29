@@ -26,10 +26,10 @@
     "note": "21.01.2026 · Có thêm một vai diễn mang tên Sữa."
   },
   {
-    "file": "hue-couple-img_3667.jpg",
-    "alt": "Hai đứa mặc áo dài trước cổng ở Huế",
-    "caption": "Huế, một sáng tháng Chín.\nHai đứa trong tà áo dài.",
-    "note": "02.09.2026 · Hai đứa đứng cạnh nhau ở Huế."
+    "file": "hue-close-img_3647.jpg",
+    "alt": "Hai đứa chụp gần trong buổi tối ở Huế",
+    "caption": "Huế, một buổi tối.\nChụp gần thêm một chút.",
+    "note": "01.09.2026 · Hai đứa trong cùng một khung hình."
   },
   {
     "file": "bay-mau-img_3724.jpg",

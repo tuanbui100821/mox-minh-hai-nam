@@ -4,3 +4,5 @@
 @media(prefers-reduced-motion:reduce){.journey-timeline{scroll-behavior:auto}}
 
 .chapter-photos.duet{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+#memory-hue .chapter-photos{grid-template-columns:repeat(2,minmax(0,1fr))}
