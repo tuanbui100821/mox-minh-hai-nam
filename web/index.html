@@ -1,99 +1,41 @@
 <!doctype html>
-<html lang="vi">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0a1512">
-  <meta name="description" content="Những ngày có em. Một cuốn phim nhỏ của Mox, Đại Đế Tuấn Minh và Sữa, bắt đầu từ 25.11.2024.">
-  <title>Những ngày có em — gửi Mox</title>
-  <link rel="icon" href="assets/star.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="story.css">
-  <link rel="stylesheet" href="cinema-palette.css">
-  <script src="calendar.js" defer></script>
-  <script src="app.js" defer></script>
-</head>
-<body data-start="{{startDate}}" data-anniversary="{{anniversaryDate}}">
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0a1512"><meta name="description" content="Hai năm của Mox, Đại Đế Tuấn Minh và Sữa. Cùng xem lại vài tấm ảnh và kỷ niệm."><title>Những ngày có em — gửi Mox</title><link rel="icon" href="assets/star.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="cinema-extended.css"><link rel="stylesheet" href="journeys.css"><link rel="stylesheet" href="premiere.css"><script src="app.js" defer></script><script src="cinema-extended.js" defer></script></head>
+<body class="awaiting-premiere" data-look="mixed" data-start="{{startDate}}" data-anniversary="{{anniversaryDate}}">
+<section class="premiere" id="premiere" aria-labelledby="premiere-title">
+  <div class="premiere-frame" aria-hidden="true"></div>
+  <div class="premiere-top"><span>MINH &amp; MOX <i>hai năm bên nhau</i></span><span>MỜI EM CÙNG XEM</span></div>
+  <div class="premiere-poster">
+    <span class="premiere-eyebrow">VÉ DÀNH CHO EM · {{secondDisplay}}</span>
+    <span class="premiere-ornament" aria-hidden="true">✦</span>
+    <h1 id="premiere-title">Những ngày<br><em>có em.</em></h1>
+    <p class="premiere-dedication">Anh gom vài tấm ảnh<br>để hai đứa cùng xem lại.</p>
+    <button class="premiere-play" id="open-film" aria-controls="film-content" disabled><span class="premiere-play-icon" aria-hidden="true">▶</span><span>Mở cuốn phim<small>NHỮNG NGÀY CỦA MÌNH</small></span></button>
+    <span class="premiere-sound-note">Mở phim, nghe nhạc cùng anh nhé.</span>
+    <noscript><p>Em bật JavaScript trong trình duyệt để mở cuốn phim nhé.</p></noscript>
+  </div>
+  <div class="premiere-bottom"><span>{{startDisplay}} <i>—</i> {{secondDisplay}}</span><span>{{recipient}} · {{sender}} · {{petName}}</span><span>CÙNG NHAU THÊM NHIỀU NĂM NỮA.</span></div>
+</section>
+<div id="film-content" hidden inert><a class="skip" href="#begin">Đọc câu chuyện</a><div class="film-grain" aria-hidden="true"></div>
 {{filters}}
-<a class="skip" href="#begin">Đến câu chuyện</a>
-<header class="topbar">
-  <a class="wordmark" href="#home" aria-label="Minh và Mox, về đầu trang"><span aria-hidden="true">m<span class="wordmark-amp">&</span>m</span><small>MINH &amp; MOX</small></a>
-  <nav class="chapter-nav" aria-label="Năm chương của câu chuyện">
-    <a href="#home" aria-current="location"><span>01</span> Mở đầu</a>
-    <a href="#begin"><span>02</span> Bắt đầu</a>
-    <a href="#memories"><span>03</span> Ký ức</a>
-    <a href="#letter"><span>04</span> Bức thư</a>
-    <a href="#tomorrow"><span>05</span> Còn tiếp</a>
-  </nav>
-  <button id="sound" class="sound" type="button" aria-pressed="false" aria-controls="background-music" aria-label="Bật nhạc nền I Love You Baby" title="I Love You Baby"><span class="sound-icon" aria-hidden="true">♫</span><span class="sound-label">Bật nhạc</span></button>
-</header>
-<audio id="background-music" loop preload="none"><source src="assets/audio/i-love-you-baby.m4a" type="audio/mp4"></audio>
-<main>
-  <section class="hero dark chapter" id="home" aria-labelledby="hero-title">
-    <div class="hero-inner wrap">
-      <div class="hero-copy">
-        <p class="eyebrow"><span>01 / THE PREMIERE</span><i></i> GỬI MOX</p>
-        <h1 id="hero-title">Những ngày<br><em>có em.</em></h1>
-        <p class="hero-note">Một cuốn phim nhỏ,<br>có hai đứa mình và Sữa.</p>
-        <a class="button button-gold" href="#begin"><span class="play-icon" aria-hidden="true">▶</span>Bắt đầu câu chuyện<span aria-hidden="true">↗</span></a>
-        <p class="hero-aside">Không cần vội. Mình cùng xem lại nhé.</p>
-      </div>
-      <div class="hero-picture">
-        <div class="photo-border"><img src="assets/photos/hoi-an-img_3760.jpg" width="1800" height="1350" alt="Mox và Tuấn Minh chụp chung dưới đèn lồng ở Hội An" fetchpriority="high"><span class="photo-annotation">Hội An, một tối có nhau.</span></div>
-        <span class="picture-index" aria-hidden="true">STILL NO. 01 / OUR LITTLE MOVIE</span>
-        <div class="cinema-ticket" aria-label="Vé kỷ niệm hai năm dành cho Mox">
-          <div class="ticket-main"><span class="ticket-label">SUẤT CHIẾU RIÊNG</span><strong>Một vé cho Mox.</strong><span>VÀ MỘT CHỖ CẠNH ANH.</span></div>
-          <div class="ticket-stub"><span>KỶ NIỆM 02 NĂM</span><b>25.11</b><span>2026 · KHÔNG HẾT HẠN</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="hero-bottom wrap"><span>{{startDisplay}} <i>—</i> CÂU CHUYỆN VẪN ĐANG VIẾT</span><a href="#begin" aria-label="Đến chương ngày mình bắt đầu">CUỘN CHẬM THÔI <span aria-hidden="true">↓</span></a></div>
-  </section>
-
-  <section class="beginning chapter paper" id="begin" aria-labelledby="begin-title">
-    <div class="wrap">
-      <p class="eyebrow">02 / THE BEGINNING <i></i> NGÀY MÌNH BẮT ĐẦU</p>
-      <div class="begin-grid">
-        <div><h2 id="begin-title">Từ một ngày,<br><em>thành những ngày.</em></h2><p class="body-copy">Chúng mình bắt đầu từ ngày 25 tháng 11.<br>Không phải ngày nào cũng có ảnh.<br>Nhưng từng chút một, mình có một câu chuyện chung.</p><div class="start-date"><span>25</span><i>/</i><span>11</span><small>2024<br>NGÀY CÓ NHAU</small></div></div>
-        <div class="days-card"><span class="tiny-label">TÍNH ĐẾN <time id="counter-date">{{todayDisplay}}</time></span><div class="day-number"><strong id="days">{{elapsedDays}}</strong><span>ngày</span></div><p>mình có nhau.</p><span class="count-note" id="anniversary-status">{{anniversaryStatus}}</span><div class="counter-line" aria-hidden="true"><span></span><i>♡</i><span></span></div><small>Hai năm là 730 ngày.<br>Còn những ngày sau, mình cứ đếm tiếp.</small></div>
-      </div>
-      <ol class="short-timeline" aria-label="Những mốc của chúng mình"><li><time datetime="{{startDate}}">{{startDisplay}}</time><strong>Ngày mình bắt đầu.</strong></li><li><time datetime="2025-09-02">02.09.2025</time><strong>Một tấm ảnh ở Thăng Long.</strong></li><li><time datetime="{{anniversaryDate}}">{{secondDisplay}}</time><strong>Mốc hai năm của mình.</strong></li></ol>
-    </div>
-  </section>
-
-  <section class="memories chapter paper" id="memories" aria-labelledby="memories-title">
-    <div class="wrap">
-      <div class="section-heading"><div><p class="eyebrow">03 / OUR EVERYDAY MAGIC</p><h2 id="memories-title">Những ngày<br><em>mình có nhau.</em></h2></div><p class="body-copy">Rồi có thêm những chuyến đi, những tấm ảnh,<br>cả Sữa nữa. Có những khoảnh khắc anh vẫn muốn<br>mở lại, để thấy hai đứa của ngày hôm đó.</p></div>
-      <div class="album-line"><span>12 TẤM ẢNH, MỘT CHÚT CHUYỆN CỦA MÌNH</span><span>CHẠM VÀO ẢNH ĐỂ XEM GẦN HƠN <i aria-hidden="true">↗</i></span></div>
-      <div class="featured-grid" id="gallery">{{featuredPhotos}}</div>
-      <aside class="sua-note" aria-labelledby="sua-note-title"><span class="paw" aria-hidden="true">🐾</span><div><h3 id="sua-note-title">À, còn Sữa nữa.</h3><p>Ảnh hai người thì nhiều rồi. Có Sữa chen vào, nhìn mới đủ nhà mình.</p></div><span class="sua-signoff">Mox · Tuấn Minh · Sữa</span></aside>
-      <div class="album-more"><p>Còn vài tấm nữa anh để ở đây.</p><button type="button" id="open-album" class="button button-outline" aria-haspopup="dialog" aria-controls="album-dialog">Xem toàn bộ kỷ niệm <span class="button-count">{{photoCount}}</span><span aria-hidden="true">↗</span></button><noscript><p>Em bật JavaScript để mở album đầy đủ và xem ảnh lớn nhé.</p></noscript></div>
-    </div>
-  </section>
-
-  <section class="letter chapter" id="letter" aria-labelledby="letter-title">
-    <div class="wrap letter-layout">
-      <div class="letter-intro"><p class="eyebrow">04 / A LETTER FOR YOU</p><h2 id="letter-title">Có vài điều,<br><em>anh muốn nói.</em></h2><p class="body-copy">Anh để trong một bức thư.<br>Em đọc lúc nào thấy muốn nhé.</p><div class="little-notes"><div><span>KHI EM MỆT</span><p>Nghỉ một chút nhé. Không cần cố làm hết mọi việc trong một ngày. Có gì cứ nói với anh.</p></div><div><span>KHI MÌNH CHƯA HIỂU NHAU</span><p>Mình hỏi lại nhau, nghe cho hết câu. Anh cũng sẽ học cách làm điều đó tốt hơn.</p></div></div></div>
-      <div class="envelope" id="envelope">
-        <button type="button" class="envelope-front" id="seal" aria-label="Mở lá thư anh gửi Mox" aria-expanded="false" aria-controls="letter-content"><span class="envelope-flap" aria-hidden="true"></span><span class="envelope-stamp" aria-hidden="true">M<span>♡</span>M</span><span class="envelope-to">Gửi Mox,</span><span class="envelope-prompt">Mở thư anh viết <i aria-hidden="true">↗</i></span><span class="envelope-from">{{sender}}<br>{{secondDisplay}}</span></button>
-        {{letter}}
-      </div>
-    </div>
-  </section>
-
-  <section class="ending dark chapter" id="tomorrow" aria-labelledby="ending-title">
-    <div class="wrap">
-      <p class="eyebrow">05 / TO BE CONTINUED</p>
-      <div class="ending-grid"><div><h2 id="ending-title">Phần tiếp theo,<br><em>mình cùng viết.</em></h2><p class="body-copy">Không cần lên hết kế hoạch cho ngày mai.<br>Anh chỉ muốn trong đó vẫn có em và Sữa.</p><ol class="future-list"><li><span>01</span><div><h3>Thêm một chuyến đi.</h3><p>Gần hay xa cũng được. Mình chọn một chỗ rồi đi.</p></div></li><li><span>02</span><div><h3>Một tối ở nhà.</h3><p>Ăn cơm, xem phim, chơi với Sữa. Thế cũng vui.</p></div></li><li><span>03</span><div><h3>Lại một ngày 25 tháng 11.</h3><p>Chụp thêm tấm ảnh, xem hai đứa đã khác thế nào.</p></div></li></ol></div><div class="next-photo"><div class="future-frame"><span class="future-cross" aria-hidden="true">＋</span><span>Tấm ảnh tiếp theo.</span><small>ĐỂ DÀNH CHO HAI ĐỨA VÀ SỮA</small></div><p>Chưa chụp.<br>Nhưng anh mong vẫn là mình.</p></div></div>
-      <div class="last-scene"><span class="last-star" aria-hidden="true">✧</span><p>Anh chỉ muốn nói,</p><h3>anh yêu em.</h3><div class="hug-wrap"><button id="send-kiss" type="button" class="button button-gold">Ôm một cái <span aria-hidden="true">♡</span></button><span class="hug-heart" aria-hidden="true">♡</span></div><p class="hug-message" id="kiss-message" role="status" aria-live="polite">Một cái ôm, để dành cho em.</p><div class="end-mark"><span lang="zh-Hant">未完待續</span><span lang="vi">Còn tiếp…</span></div></div>
-    </div>
-    <footer class="wrap"><span>{{message}} ♡</span><small>MOX · ĐẠI ĐẾ TUẤN MINH · SỮA</small><a href="#home">VỀ ĐẦU TRANG <span aria-hidden="true">↑</span></a></footer>
-  </section>
-</main>
-
-<dialog id="album-dialog" class="album-dialog" aria-labelledby="album-title"><div class="album-dialog-header"><div><span class="tiny-label">ALBUM ĐẦY ĐỦ · {{photoCount}} ẢNH</span><h2 id="album-title">Những tấm ảnh của mình.</h2></div><button type="button" id="close-album" class="icon-button" aria-label="Đóng album">×</button></div><div class="full-album-tools"><label for="event-filter">Xem theo nơi <select id="event-filter">{{eventOptions}}</select></label><span id="photo-count" role="status" aria-live="polite">{{photoCount}} ảnh</span></div><div id="all-photos">{{photos}}</div></dialog>
-<dialog id="lightbox" aria-label="Ảnh của chúng mình"><div class="lightbox-toolbar"><span id="lightbox-position" class="tiny-label"></span><button type="button" id="lightbox-close" class="icon-button" aria-label="Đóng ảnh">×</button></div><div class="lightbox-stage"><button type="button" id="photo-prev" class="icon-button" aria-label="Ảnh trước">←</button><figure><div class="lightbox-image-wrap"><img id="lightbox-image" alt=""><div id="image-error" role="status" hidden><p>Ảnh chưa tải được. Em thử lại nhé.</p><button type="button" id="retry-image" class="button button-outline">Tải lại ảnh</button></div></div><figcaption id="lightbox-caption"></figcaption></figure><button type="button" id="photo-next" class="icon-button" aria-label="Ảnh tiếp theo">→</button></div><p class="lightbox-hint">← → ĐỔI ẢNH <span>ESC ĐỂ ĐÓNG</span></p></dialog>
-</body>
-</html>
+<header class="topbar"><a class="wordmark" href="#home"><span class="cinema-dot"></span> MINH &amp; MOX <small>hai năm</small></a><span class="top-date">{{startDisplay}} <i>—</i> {{secondDisplay}}</span><button id="sound" class="sound" aria-pressed="false" aria-controls="background-music" aria-label="Bật nhạc nền I Love You Baby" title="I Love You Baby · Nhạc nền của hai đứa"><span aria-hidden="true">♫</span><span class="sound-label">bật nhạc nền</span></button></header>
+<audio id="background-music" loop preload="auto"><source src="assets/audio/i-love-you-baby.m4a" type="audio/mp4"></audio>
+<main id="story" tabindex="-1">
+<section class="cover" id="home"><div class="hero-image"><img src="assets/photos/gan-nhau.jpg" alt="Mox và Tuấn Minh tựa gần bên nhau" fetchpriority="high"><div class="light-leak" aria-hidden="true"></div></div><div class="hero-border" aria-hidden="true"></div><div class="vertical-title"><span lang="zh-Hant">與你一起</span><small lang="vi">Cùng em</small></div><div class="cover-copy"><span class="film-label">GỬI {{recipient}}, NHÂN HAI NĂM BÊN NHAU</span><h1>Những ngày<br><em>có em.</em></h1><p class="hero-line">Hai năm rồi.<br>Anh vui vì có em bên cạnh.</p><a class="play-button" href="#begin"><span class="play-icon" aria-hidden="true">▶</span> Cùng xem lại <span class="play-arrow">↗</span></a></div><div class="hero-bottom"><span>CÓ HAI ĐỨA VÀ SỮA<br><strong>{{recipient}} · {{sender}} · {{petName}}</strong></span><span class="film-caption">Từ 25.11.2024, mình có nhau.</span><a href="#begin" aria-label="Cuộn để đọc câu chuyện">↓</a></div></section>
+{{chaptermap}}
+<section class="opening page" id="begin"><span class="scene-label">NGÀY MÌNH BẮT ĐẦU / {{startDisplay}}</span><p class="opening-subtitle">{{startDisplay}}.<br>Ngày hai đứa đến với nhau.</p><h2>Vậy là mình<br><em>đã bên nhau hai năm.</em></h2><p>Anh để vài tấm ảnh ở đây.<br>Khi nào muốn, hai đứa lại mở ra<br><span>xem những ngày đã qua.</span></p><span class="small-chinese" lang="zh-Hant">我們的日子</span><span class="chinese-translation" lang="vi">Những ngày của chúng mình</span></section>
+{{ticket}}
+<section class="days-section"><div class="page days-inner"><span class="scene-label">TỪ NGÀY MÌNH BẮT ĐẦU</span><div class="days-title"><strong id="days">{{anniversaryDays}}</strong><p>ngày,<br>mình có nhau.</p></div><span class="count-note" id="anniversary-status">{{secondDisplay}} · Hai năm bên nhau.</span><p class="days-after">Cảm ơn em vì đã ở bên anh.<br>Mình cứ cùng nhau như vậy nhé.</p></div><span class="date-watermark" aria-hidden="true">25.11</span></section>
+{{redroom}}
+<section class="album-section page" id="memories"><div class="album-intro" id="journeys"><div><span class="scene-label">ẢNH CỦA HAI ĐỨA</span><h2>Những nơi<br><em>mình đã đi cùng nhau.</em></h2></div><p>Hoàng thành Thăng Long, Huế, Đà Nẵng,<br>Hội An, rừng dừa Bảy Mẫu.<br>Và những ngày có Sữa ở bên.</p></div><p class="journey-note">Anh xếp ảnh thành từng mục.<br>Mình cùng xem lại nhé.</p>{{journeyTimeline}}<div class="album-tools"><div class="filters" role="group" aria-label="Lọc ảnh kỷ niệm"><button class="selected" data-filter="all" aria-pressed="true">Tất cả ảnh</button><button data-filter="couple" aria-pressed="false">Hai đứa</button><button data-filter="family" aria-pressed="false">Có Sữa</button></div><button id="film-look" class="film-look" aria-pressed="true">◉ Màu ảnh <span>/ xem ảnh gốc</span></button></div><div class="journey-controls"><label for="event-filter">CHỌN MỤC ẢNH <select id="event-filter">{{eventOptions}}</select></label><span id="photo-count" role="status" aria-live="polite"></span></div><div class="memory-chapters" id="gallery">{{photos}}</div><p id="filter-empty" class="filter-empty" hidden>Chưa có ảnh ở mục này. Em thử chọn mục khác nhé.</p><p class="album-foot">Rồi mình chụp thêm nhiều ảnh nữa,<br>cả hai đứa và Sữa nhé.</p></section>
+{{nightcity}}
+{{reel}}
+<section class="sua-section" id="pet"><div class="sua-still"><img src="assets/photos/nha-minh-co-sua.jpg" alt="Mox và Tuấn Minh ôm Sữa cùng chụp ảnh" loading="lazy"></div><div class="page sua-inner"><div class="sua-copy"><span class="scene-label">CÒN CÓ SỮA NỮA</span><h2>Có cả<br><em>{{petName}}.</em></h2><p>Nhà mình còn có Sữa,<br>nên ảnh cũng phải có Sữa nữa.</p><p class="sua-subtitle">“Lại đây chụp chung nào, Sữa.”</p></div></div><span class="sua-credit">MOX · TUẤN MINH · SỮA</span></section>
+{{quietnotes}}
+<section class="before-letter page"><span class="scene-label">MẤY DÒNG GỬI EM</span><h2>Có lời chưa nói,<br><em>anh gửi vào thư.</em></h2><p>Đèn rồi sẽ tắt, phim rồi sẽ hết.<br>Xin những dòng này ở lại cùng em.</p></section>
+<section class="letter-section page" id="letter"><div class="letter-invitation"><span class="letter-counter">TAKE 02<br><b>FOR MOX ONLY</b></span><h2>Gửi Mox,<br><em>nhân hai năm của mình.</em></h2><p>Nếu lòng anh có thể thành lời,<br>xin em đọc chậm những dòng này.</p></div><div class="envelope" id="envelope"><div class="envelope-front" id="envelope-front"><span class="envelope-fold" aria-hidden="true"></span><span class="envelope-to">Gửi Mox,</span><span class="envelope-stamp"><span lang="zh-Hant">留住<br>此刻</span><small lang="vi">Giữ lại<br>khoảnh khắc này</small></span><button class="seal" id="seal" aria-label="Mở lá thư anh gửi Mox"><span>Đọc thư anh viết</span> ↗</button><span class="envelope-from">{{sender}}<br>{{secondDisplay}}</span></div><article id="letter-content" class="letter-paper" hidden tabindex="-1"><span class="letter-date">{{secondDisplay}} · hai năm của mình</span><h3>Mox của anh,</h3><p>Hai năm. Viết ra chỉ hai tiếng, mà trong đó có biết bao ngày đã đi qua. Anh mở những tấm hình, thấy mình của ngày trước vẫn đang nhìn nhau. Thời gian đã bước tiếp; ánh mắt ấy thì còn ở lại.</p><p>Nếu đời người là một vở dài, anh chưa biết hồi sau sẽ viết những gì. Anh chỉ biết, từ ngày có em, những đoạn tưởng chừng bình thường cũng khiến anh muốn nán lại. Một bữa cơm, một bộ phim, một lần cùng dắt Sữa đi dạo — anh muốn dành cho những điều ấy cả phần đời chưa tới.</p><p>Anh viết cho em mười bốn dòng này, như đặt một ngọn đèn nhỏ bên cửa. Khi nào muốn, em cứ trở về đọc.</p><blockquote class="letter-sonnet"><span>Khi tháng năm thay áo những hàng cây,</span><span>Và ánh sáng rời ô tường rất khẽ,</span><span>Anh muốn giữ bàn tay em như thế,</span><span>Qua một chiều, rồi qua những chiều mai.</span><span>Đời còn dài, ai biết hết ngày mai,</span><span>Ai dám bảo trời không lần nổi gió?</span><span>Anh chỉ nguyện khi lòng em mỏi quá,</span><span>Có vai anh, và một chỗ ngồi yên.</span><span>Xin cứ là em, khi vui, khi muộn phiền,</span><span>Cả những lúc chưa tìm ra lời nói.</span><span>Anh sẽ học điều lòng em muốn gọi,</span><span>Bằng lắng nghe, bằng ở lại mỗi ngày.</span><span>Nếu đời cho anh chọn thêm lần nữa,</span><span>Anh vẫn tìm em, giữa vạn người qua.</span></blockquote><p>Anh không có quyền hứa thay ngày mai. Nhưng lời hứa của hôm nay thuộc về anh: sẽ dành thời gian cho em, sẽ nghe cho hết một câu, sẽ hỏi khi chưa hiểu. Để tình yêu mình có cả chỗ cho tiếng cười, lẫn những điều khó nói.</p><p class="letter-keyline">Cứ để thời gian viết thêm lên gương mặt.<br>Anh muốn vẫn là người ngồi cạnh em.</p><p>Và em, cứ mang theo những ước mơ của em. Anh muốn được thấy em đi về phía điều em yêu, được sẻ chia niềm vui ấy, được giúp một tay khi em cần. Yêu em, anh cũng muốn thương cả con đường em chọn.</p><p>Đến một ngày, khi mình lại mở những tấm ảnh này, có lẽ hai đứa sẽ cười vì đã đổi khác nhiều. Mong lúc ấy anh vẫn có thể quay sang, gọi “Mox ơi”, và nghe em đáp lại.</p><p class="love-line">Anh yêu em.</p><p>Phần còn lại, mình cùng viết nhé. Và dành một chỗ cho Sữa, ngay giữa hai đứa mình.</p><div class="letter-signature"><span>{{message}}</span><small>— {{sender}}</small></div><button class="text-link fold-letter" id="close-letter">Gấp thư lại</button></article></div></section>
+{{tomorrow}}
+<section class="ending"><div class="end-glow" aria-hidden="true"></div><div class="page"><span class="scene-label">NHỮNG NGÀY SẮP TỚI</span><h2>Mình còn<br><em>nhiều ngày bên nhau.</em></h2><div class="future-frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><span class="future-cross" aria-hidden="true">＋</span><span>Mox · Tuấn Minh · Sữa</span><small>Để dành chỗ cho tấm ảnh tiếp theo.</small></div><p>Anh mong mình vẫn cùng đi chơi,<br>chụp ảnh và chăm Sữa như vậy.</p><button id="send-kiss" class="play-button">Ôm một cái <span>♡</span></button><p id="kiss-message" class="hug-message" aria-live="polite">Cho anh ôm một cái nhé.</p><div class="end-title" lang="zh-Hant">未完待續</div><span class="end-translation" lang="vi">MÌNH CÒN NHIỀU NGÀY BÊN NHAU.</span></div></section>
+{{postcredits}}
+</main><footer class="page"><span class="footer-message">{{message}} ♡</span><p>ẢNH VÀ KỶ NIỆM CỦA {{sender}} &amp; {{recipient}}<small>Cùng Sữa.</small></p><a href="#home">VỀ ĐẦU TRANG ↑</a></footer><dialog id="lightbox" aria-label="Ảnh của chúng mình"><span class="original-label">ẢNH GỐC</span><button id="lightbox-close" aria-label="Đóng ảnh">×</button><button id="photo-prev" aria-label="Ảnh trước">←</button><figure><img id="lightbox-image" alt=""><figcaption id="lightbox-caption"></figcaption></figure><button id="photo-next" aria-label="Ảnh tiếp theo">→</button></dialog><div id="particles" aria-hidden="true"></div>
+</div>
+</body></html>
