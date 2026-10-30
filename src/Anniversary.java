@@ -50,7 +50,12 @@ public final class Anniversary {
         Properties p = new Properties();
         try (Reader reader = Files.newBufferedReader(root.resolve("config/anniversary.properties"), UTF8)) { p.load(reader); }
         LocalDate start = LocalDate.parse(p.getProperty("startDate"));
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+        long remaining = java.time.temporal.ChronoUnit.DAYS.between(today, start.plusYears(2));
+        String anniversaryStatus = remaining > 0 ? "Còn " + remaining + " ngày đến " + display(start.plusYears(2)) + "."
+            : remaining == 0 ? "Hôm nay, mình tròn hai năm." : "Mốc hai năm của mình · " + display(start.plusYears(2)) + ".";
         Path output = root.resolve("dist"); Files.createDirectories(output);
+        createPhotoPreviews(root, output);
         try (var files = Files.walk(root.resolve("web"))) {
             for (Path source : files.filter(Files::isRegularFile).toList()) {
                 Path relative = root.resolve("web").relativize(source), target = output.resolve(relative);
@@ -70,8 +75,12 @@ public final class Anniversary {
                     for (String key : p.stringPropertyNames()) html = html.replace("{{" + key + "}}", escape(p.getProperty(key)));
                     html = html.replace("{{anniversaryDate}}", start.plusYears(2).toString())
                         .replace("{{anniversaryDays}}", Long.toString(java.time.temporal.ChronoUnit.DAYS.between(start, start.plusYears(2))))
+                        .replace("{{elapsedDays}}", Long.toString(Math.max(0, java.time.temporal.ChronoUnit.DAYS.between(start, today))))
+                        .replace("{{todayDisplay}}", display(today)).replace("{{anniversaryStatus}}", anniversaryStatus)
                         .replace("{{startDisplay}}", display(start)).replace("{{firstDisplay}}", display(start.plusYears(1)))
                         .replace("{{secondDisplay}}", display(start.plusYears(2))).replace("{{photos}}", gallery(root))
+                        .replace("{{featuredPhotos}}", featuredGallery(root))
+                        .replace("{{photoCount}}", Integer.toString(memoryChapters(root).stream().mapToInt(c -> c.photos().size()).sum()))
                         .replace("{{journeyTimeline}}", journeyTimeline(root)).replace("{{eventOptions}}", eventOptions(root));
                     if (html.contains("{{")) throw new IllegalStateException("Unresolved template field: " + relative);
                     Files.writeString(target, html, UTF8);
@@ -130,6 +139,61 @@ public final class Anniversary {
         return image;
     }
     private static String photoUrl(String filename) { return "assets/photos/" + URLEncoder.encode(filename, UTF8).replace("+", "%20"); }
+    private static String previewUrl(String filename) { return "assets/photos/previews/" + URLEncoder.encode(filename, UTF8).replace("+", "%20"); }
+    private static void createPhotoPreviews(Path root, Path output) throws IOException {
+        Path previewFolder = output.resolve("assets/photos/previews");
+        Files.createDirectories(previewFolder);
+        for (MemoryChapter chapter : memoryChapters(root)) for (MemoryPhoto photo : chapter.photos()) {
+            var original = javax.imageio.ImageIO.read(photoPath(root, photo.file()).toFile());
+            if (original == null) throw new IllegalArgumentException("Unsupported image: " + photo.file());
+            double ratio = Math.min(1.0, Math.min(720.0 / original.getWidth(), 960.0 / original.getHeight()));
+            int width = Math.max(1, (int) Math.round(original.getWidth() * ratio));
+            int height = Math.max(1, (int) Math.round(original.getHeight() * ratio));
+            var preview = new java.awt.image.BufferedImage(width, height, java.awt.image.BufferedImage.TYPE_INT_RGB);
+            var graphics = preview.createGraphics();
+            graphics.setRenderingHint(java.awt.RenderingHints.KEY_INTERPOLATION, java.awt.RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            graphics.drawImage(original, 0, 0, width, height, null); graphics.dispose();
+            var writer = javax.imageio.ImageIO.getImageWritersByFormatName("jpeg").next();
+            try (var stream = javax.imageio.ImageIO.createImageOutputStream(previewFolder.resolve(photo.file()).toFile())) {
+                writer.setOutput(stream);
+                var parameters = writer.getDefaultWriteParam();
+                parameters.setCompressionMode(javax.imageio.ImageWriteParam.MODE_EXPLICIT); parameters.setCompressionQuality(.82f);
+                writer.write(null, new javax.imageio.IIOImage(preview, null, null), parameters);
+            } finally { writer.dispose(); }
+        }
+    }
+    private static String photoCard(Path root, MemoryPhoto photo, MemoryChapter chapter, String id) throws IOException {
+        var dimensions = javax.imageio.ImageIO.read(photoPath(root, photo.file()).toFile());
+        if (dimensions == null) throw new IllegalArgumentException("Unsupported image: " + photo.file());
+        String date = photo.date() == null ? "" : display(photo.date());
+        String caption = photo.caption() + " · " + chapter.place() + (date.isBlank() ? "" : " · " + date);
+        return "<button type=\"button\" class=\"photo-card\"" + (id.isBlank() ? "" : " id=\"" + id + "\"")
+            + " data-event=\"" + chapter.id() + "\" data-photo=\"" + photoUrl(photo.file()) + "\" data-caption=\"" + escape(caption)
+            + "\" aria-haspopup=\"dialog\" aria-label=\"Xem ảnh: " + escape(caption) + "\"><span class=\"photo-image\"><img loading=\"lazy\" decoding=\"async\" src=\""
+            + previewUrl(photo.file()) + "\" width=\"" + dimensions.getWidth() + "\" height=\"" + dimensions.getHeight() + "\" alt=\""
+            + escape(photo.caption() + " · " + chapter.place()) + "\"></span><span class=\"photo-meta\"><span>" + escape(chapter.place()) + "</span>"
+            + (photo.date() == null ? "" : "<time datetime=\"" + photo.date() + "\">" + date + "</time>")
+            + "</span><span class=\"photo-caption\">" + escape(photo.caption()) + "</span></button>";
+    }
+    private static String featuredGallery(Path root) throws IOException {
+        Set<String> featured = new LinkedHashSet<>();
+        for (String line : Files.readAllLines(root.resolve("config/featured.txt"), UTF8)) {
+            if (line.isBlank() || line.startsWith("#")) continue;
+            if (!featured.add(line.strip())) throw new IllegalArgumentException("Duplicate featured photo: " + line);
+        }
+        if (featured.size() < 10 || featured.size() > 15) throw new IllegalArgumentException("Select 10–15 featured photos.");
+        StringBuilder html = new StringBuilder();
+        Set<String> found = new HashSet<>();
+        for (MemoryChapter chapter : memoryChapters(root)) {
+            boolean first = true;
+            for (MemoryPhoto photo : chapter.photos()) if (featured.contains(photo.file())) {
+                found.add(photo.file());
+                html.append(photoCard(root, photo, chapter, first ? "memory-" + chapter.id() : "")); first = false;
+            }
+        }
+        if (!found.equals(featured)) throw new IllegalArgumentException("Featured photo missing from photos.tsv.");
+        return html.toString();
+    }
     private static String journeyTimeline(Path root) throws IOException {
         StringBuilder html = new StringBuilder("<ol class=\"journey-timeline\" aria-label=\"Dòng thời gian kỷ niệm\">");
         for (MemoryChapter chapter : memoryChapters(root)) {
@@ -147,28 +211,14 @@ public final class Anniversary {
     private static String gallery(Path root) throws IOException {
         StringBuilder html = new StringBuilder();
         for (MemoryChapter chapter : memoryChapters(root)) {
-            html.append("<article class=\"memory-chapter\" id=\"memory-").append(chapter.id()).append("\" data-event=\"").append(chapter.id())
-                .append("\" aria-labelledby=\"chapter-title-").append(chapter.id()).append("\"><div class=\"chapter-date\"><span class=\"chapter-pin\" aria-hidden=\"true\"></span><span>")
-                .append(escape(chapter.dateLabel())).append("</span><small>").append(escape(chapter.place())).append("</small></div><div class=\"chapter-body\"><header class=\"chapter-heading\"><div><h3 id=\"chapter-title-")
-                .append(chapter.id()).append("\">").append(escape(chapter.title())).append("</h3>");
-            if (!chapter.note().isBlank()) html.append("<p>").append(escape(chapter.note())).append("</p>");
-            html.append("</div><span class=\"chapter-count\">").append(chapter.photos().size()).append(" ảnh</span></header><div class=\"chapter-photos")
-                .append(chapter.photos().size() == 1 ? " single" : chapter.photos().size() == 2 ? " duet" : "").append("\">");
+            html.append("<article class=\"memory-chapter\" id=\"album-memory-").append(chapter.id()).append("\" data-event=\"").append(chapter.id())
+                .append("\" aria-labelledby=\"chapter-title-").append(chapter.id()).append("\"><header class=\"chapter-heading\"><h3 id=\"chapter-title-")
+                .append(chapter.id()).append("\">").append(escape(chapter.place())).append("</h3><span class=\"chapter-date\">").append(escape(chapter.dateLabel()))
+                .append("</span></header><div class=\"chapter-photos\">");
             for (MemoryPhoto photo : chapter.photos()) {
-                var dimensions = javax.imageio.ImageIO.read(photoPath(root, photo.file()).toFile());
-                if (dimensions == null) throw new IllegalArgumentException("Unsupported image: " + photo.file());
-                int width = dimensions.getWidth(), height = dimensions.getHeight();
-                String date = photo.date() == null ? "" : display(photo.date());
-                String caption = photo.caption() + (date.isBlank() ? "" : " · " + date);
-                html.append("<button class=\"photo-card ").append(width > height ? "landscape" : "portrait").append("\" data-category=\"").append(photo.category())
-                    .append("\" data-event=\"").append(chapter.id()).append("\" data-date=\"").append(photo.date() == null ? "" : photo.date()).append("\" data-photo=\"")
-                    .append(photoUrl(photo.file())).append("\" data-caption=\"").append(escape(caption)).append("\"><img loading=\"lazy\" decoding=\"async\" src=\"")
-                    .append(photoUrl(photo.file())).append("\" width=\"").append(width).append("\" height=\"").append(height).append("\" alt=\"").append(escape(photo.caption()))
-                    .append("\"><span>").append(escape(photo.caption())).append("</span>");
-                if (photo.date() != null) html.append("<time datetime=\"").append(photo.date()).append("\">").append(date).append("</time>");
-                html.append("</button>");
+                html.append(photoCard(root, photo, chapter, ""));
             }
-            html.append("</div></div></article>");
+            html.append("</div></article>");
         }
         return html.toString();
     }
