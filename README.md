@@ -10,7 +10,7 @@ Bản hiện tại kể chuyện qua đúng **5 chương**:
 4. **A Letter for You** — hai lời nhắn ngắn, phong bì và bức thư chính được giữ nguyên nội dung.
 5. **To Be Continued** — ba điều muốn làm cùng nhau, khung ảnh tiếp theo, một cái ôm và một đoạn kết duy nhất.
 
-Giao diện dùng Midnight Navy `#172234`, Warm Ivory `#F5F0E7`, Antique Gold `#C7A579`, Dusty Rose `#B9858E`, với Lora và Be Vietnam Pro. Ảnh chỉ phủ màu rất nhẹ; chế độ xem lớn dùng ảnh gốc của bản web. Không có màn chờ bắt buộc, trình chiếu tự chạy hoặc bộ lọc màu trùng lặp. Nội dung vẫn đọc được nếu không có animation; ảnh và phong bì dùng bàn phím được. Toàn bộ chuyển động tôn trọng `prefers-reduced-motion`.
+Giao diện giữ bảng màu điện ảnh Hồng Kông trước đây: đỏ rượu, hổ phách, xanh ngọc và xanh đêm, với Lora và Be Vietnam Pro. `web/cinema-palette.css` phục hồi màu trên bố cục 5 chương. Ảnh dùng hai lớp màu ấm/lạnh cũ trong `content/filters.html`; chế độ xem lớn dùng ảnh gốc của bản web. Không có màn chờ bắt buộc, trình chiếu tự chạy hoặc bộ lọc màu trùng lặp. Nội dung vẫn đọc được nếu không có animation; ảnh và phong bì dùng bàn phím được. Toàn bộ chuyển động tôn trọng `prefers-reduced-motion`.
 
 ## Chạy và build bằng Java
 
@@ -37,7 +37,7 @@ java -jar build/anniversary.jar serve 8080
 - `config/events.tsv`: mã địa điểm, tên địa điểm, tiêu đề và lời dẫn tùy chọn.
 - `config/featured.txt`: 10–15 tên tệp được chọn cho chương ký ức; hiện có 12. Java kiểm tra trùng tên và ảnh bị thiếu. Danh sách được trình bày theo các nhóm và ngày chụp; ảnh chưa biết ngày không bị gán ngày giả.
 - `content/letter.html`: bức thư chính. Được chèn vào `web/index.html` khi build.
-- `web/index.html`, `web/story.css`, `web/app.js`, `web/calendar.js`: giao diện hiện tại. Các cảnh và stylesheet cũ không còn được nhúng vào trang.
+- `web/index.html`, `web/story.css`, `web/cinema-palette.css`, `web/app.js`, `web/calendar.js`: giao diện hiện tại. Các cảnh và stylesheet cũ không còn được nhúng vào trang.
 - `web/assets/photos/`: 26 ảnh đã có, gồm ảnh đôi và ảnh của Sữa. Java tạo bản xem trước JPEG tối đa 720 × 960 px, chất lượng 82%, không metadata tại `dist/assets/photos/previews/`. Bấm ảnh để mở bản web đầy đủ. Các tệp ảnh nguồn được giữ nguyên.
 
 Album đầy đủ mở trong hộp thoại, có chọn địa điểm. Bấm ảnh để xem lớn, dùng ←/→ để chuyển và Escape để trở về album. Escape lần nữa đóng album. Focus bàn phím trở về nút vừa mở. Khi ảnh không tải được, có thông báo và nút thử lại.

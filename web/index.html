@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#172234">
+  <meta name="theme-color" content="#0a1512">
   <meta name="description" content="Những ngày có em. Một cuốn phim nhỏ của Mox, Đại Đế Tuấn Minh và Sữa, bắt đầu từ 25.11.2024.">
   <title>Những ngày có em — gửi Mox</title>
   <link rel="icon" href="assets/star.svg" type="image/svg+xml">
@@ -11,10 +11,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="story.css">
+  <link rel="stylesheet" href="cinema-palette.css">
   <script src="calendar.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body data-start="{{startDate}}" data-anniversary="{{anniversaryDate}}">
+{{filters}}
 <a class="skip" href="#begin">Đến câu chuyện</a>
 <header class="topbar">
   <a class="wordmark" href="#home" aria-label="Minh và Mox, về đầu trang"><span aria-hidden="true">m<span class="wordmark-amp">&</span>m</span><small>MINH &amp; MOX</small></a>
