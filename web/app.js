@@ -135,6 +135,10 @@
     revealFilm(false,true);
     requestAnimationFrame(()=>requestAnimationFrame(()=>scrollTo(target,'start',instant)));
   }
+  const entryUrl=new URL(location.href);
+  if(entryUrl.searchParams.get('unlocked')==='1'){
+    revealFilm(false,true);entryUrl.searchParams.delete('unlocked');history.replaceState(null,'',entryUrl.pathname+entryUrl.search+entryUrl.hash);
+  }
   window.addEventListener('hashchange',()=>followHash());
   if(location.hash){
     const initialHash=location.hash;let interacted=false;

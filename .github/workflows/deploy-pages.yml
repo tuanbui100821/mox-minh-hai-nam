@@ -34,7 +34,9 @@ jobs:
           node --check web/app.js
           node --check web/cinema-extended.js
           node --check web/calendar.js
+          node --check web/_worker.js
           node tests/calendar.test.cjs
+          node tests/auth.test.cjs
       - name: Build website with Java
         run: |
           mkdir -p build/classes

@@ -10,3 +10,5 @@ html{scroll-padding-top:108px;scrollbar-gutter:stable}body.photo-open{overflow:h
 #lightbox-close,#photo-prev,#photo-next{line-height:1}#lightbox-close{padding:4px}
 
 @media(max-width:700px){#premiere-title{font-size:clamp(48px,15vw,72px);line-height:1.15;letter-spacing:-1.8px}.premiere-play{font-size:clamp(22px,6vw,27px);gap:14px;padding:14px 18px}.premiere-play-icon{flex-shrink:0}.cover h1{font-size:clamp(58px,15vw,74px)}}
+
+.auth-lock{display:none;margin:0;border-left:1px solid #a8995d33}body[data-protected=true] .auth-lock{display:block}.auth-lock button{background:transparent;color:#d8be81;min-height:44px;padding:10px 13px;font:11px var(--sans)}@media(max-width:700px){.auth-lock button{font-size:10px;padding-inline:11px}}
