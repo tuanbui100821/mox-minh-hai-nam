@@ -11,8 +11,9 @@
   const eventFilter=$('#event-filter');
 
   function updateCalendar() {
-    const state=StoryCalendar.at(new Date(),document.body.dataset.start,document.body.dataset.anniversary);
+    const state=StoryCalendar.at(new Date(),document.body.dataset.start,document.body.dataset.anniversary,document.body.dataset.displayMode);
     $('#days').textContent=String(state.elapsed); $('#counter-date').textContent=state.todayDisplay; $('#counter-date').dateTime=state.today;
+    $('#counter-label').textContent=state.label;$('#counter-context').textContent=state.context;$('#celebration-note').textContent=state.note;
     $('#anniversary-status').textContent=state.status; $('#anniversary-lead').textContent=state.lead; $('#together-line').textContent=state.together;
   }
   updateCalendar(); setInterval(updateCalendar,60000);

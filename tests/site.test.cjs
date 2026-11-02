@@ -27,3 +27,13 @@ assert.equal([...html.matchAll(/class="photo-card /g)].length,photoCount,'Photo 
 for(const size of ['small','large'])assert.equal(fs.readdirSync(path.join(dist,'assets/photos/previews',size)).length,photoCount,'Missing previews');
 for(const expected of ['open-quietly','days','lightbox','retry-photo','close-letter-top'])assert.ok(ids.includes(expected),'Missing control '+expected);
 console.log('Passed: generated HTML, anchors, image variants, layout dimensions, controls and '+photoCount+' photos.');
+
+const config=fs.readFileSync(path.join(root,'config/anniversary.properties'),'utf8');
+if(/^displayMode=anniversary$/m.test(config.replace(/\r/g,''))){
+ assert.match(html,/data-display-mode="anniversary"/);
+ assert.match(html,/id="days">730</);
+ assert.match(html,/id="counter-date">25\.11\.2026</);
+ assert.match(html,/id="anniversary-lead">Hai năm rồi\.</);
+ assert.ok(!html.includes('sắp bên nhau hai năm.'));
+ console.log('Passed: Java fallback also renders the anniversary date and message.');
+}

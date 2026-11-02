@@ -50,7 +50,11 @@ public final class Anniversary {
         Properties p = new Properties();
         try (Reader reader = Files.newBufferedReader(root.resolve("config/anniversary.properties"), UTF8)) { p.load(reader); }
         LocalDate start = LocalDate.parse(p.getProperty("startDate"));
-        LocalDate today = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+        String displayMode = p.getProperty("displayMode", "live");
+        if (!Set.of("live", "anniversary").contains(displayMode)) throw new IllegalArgumentException("displayMode must be live or anniversary");
+        p.setProperty("displayMode", displayMode);
+        boolean anniversaryMode = displayMode.equals("anniversary");
+        LocalDate today = anniversaryMode ? start.plusYears(2) : LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
         long remaining = java.time.temporal.ChronoUnit.DAYS.between(today, start.plusYears(2));
         String status = remaining > 0 ? "Còn " + remaining + " ngày đến kỷ niệm hai năm · " + display(start.plusYears(2))
             : remaining == 0 ? "Hôm nay, mình tròn hai năm." : "Mốc hai năm của mình · " + display(start.plusYears(2));
@@ -76,6 +80,9 @@ public final class Anniversary {
                     html = html.replace("{{anniversaryDate}}", start.plusYears(2).toString())
                         .replace("{{elapsedDays}}", Long.toString(Math.max(0, java.time.temporal.ChronoUnit.DAYS.between(start, today))))
                         .replace("{{todayDisplay}}", display(today)).replace("{{anniversaryStatus}}", status)
+                        .replace("{{counterLabel}}", anniversaryMode ? "Hôm nay" : "Tính đến")
+                        .replace("{{counterContext}}", anniversaryMode ? "hai năm của chúng mình" : "theo giờ Việt Nam")
+                        .replace("{{celebrationNote}}", remaining == 0 ? "Chúc mừng hai năm của chúng mình." : "Cảm ơn em vì đã ở bên anh.")
                         .replace("{{anniversaryLead}}", remaining > 0 ? "Sắp hai năm rồi." : remaining == 0 ? "Hai năm rồi." : "Từ ngày mình có nhau,")
                         .replace("{{togetherLine}}", remaining > 0 ? "sắp bên nhau hai năm." : remaining == 0 ? "đã bên nhau hai năm." : "vẫn đang viết tiếp.")
                         .replace("{{anniversaryDays}}", Long.toString(java.time.temporal.ChronoUnit.DAYS.between(start, start.plusYears(2))))

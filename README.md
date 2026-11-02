@@ -1,5 +1,7 @@
 # Những ngày có em — gửi Mox
 
+**Bản quà kỷ niệm:** `displayMode=anniversary` trong `config/anniversary.properties`. Trang được trình bày như ngày **25/11/2026**, tròn **730 ngày**: “Hai năm rồi”, “Hôm nay, mình tròn hai năm”, không đếm ngược. Java và JavaScript dùng cùng chế độ, nên mở sớm hay mở lại về sau vẫn giữ đúng khoảnh khắc kỷ niệm. Đổi thành `displayMode=live` và build lại để dùng ngày thực tế theo giờ Việt Nam.
+
 Món quà kỷ niệm dành cho **Mox × Đại Đế Tuấn Minh**, từ **25/11/2024**, và bé **Sữa**. Bản dài mang hai sắc thái điện ảnh Hồng Kông: đỏ rượu–hổ phách–ô liu và xanh ngọc–cyan–vàng neon. Giữ lời nhắn **kiss Rockiss**, lá thư riêng và khung hình dành cho ngày mai.
 
 Trang có thêm chiếc vé ngày bắt đầu, cảnh phòng đỏ, cảnh phố xanh, cuộn ảnh chuyển tay kèm lời kể, bốn mẩu nhắn mở riêng, danh sách những điều mong được làm cùng nhau và cảnh sau phần kết. Các mẩu nhắn và kế hoạch tương lai là lời viết gợi ý, không gán những kỷ niệm chưa được cung cấp cho hai bạn.
