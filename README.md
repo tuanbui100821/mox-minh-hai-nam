@@ -68,7 +68,7 @@ javac -encoding UTF-8 -d build/classes src/Anniversary.java
 java -cp build/classes Anniversary build .
 ```
 
-Đặt thư mục đầu ra là `dist`. Nếu môi trường build không có JDK, dùng bản build sẵn trên máy qua Direct Upload. Bản hiện tại đã được triển khai tại **https://mox-minh-hai-nam.pages.dev/**. Mã nguồn nằm trong kho riêng tư **https://github.com/tuanbui100821/mox-minh-hai-nam**.
+Đặt thư mục đầu ra là `dist`. Nếu môi trường build không có JDK, dùng bản build sẵn trên máy qua Direct Upload. Bản hiện tại đã được triển khai tại **https://kiss-rockiss-2yrs.pages.dev/**. Mã nguồn nằm trong kho riêng tư **https://github.com/tuanbui100821/mox-minh-hai-nam**.
 
 
 ### Tự động cập nhật từ GitHub
@@ -77,11 +77,11 @@ Mỗi lần push lên nhánh `main` của kho `tuanbui100821/mox-minh-hai-nam`, 
 
 1. Lấy đúng mã nguồn của commit vừa push.
 2. Cài Java 17 và build trang tĩnh vào `dist/`.
-3. Dùng Wrangler triển khai lên **https://mox-minh-hai-nam.pages.dev/**.
+3. Dùng Wrangler triển khai lên **https://kiss-rockiss-2yrs.pages.dev/**.
 
 Theo dõi kết quả ở https://github.com/tuanbui100821/mox-minh-hai-nam/actions. Có thể bấm **Run workflow** để chạy lại trên nhánh `main`.
 
-Dự án Cloudflare giữ kiểu Direct Upload và được GitHub Actions cập nhật tự động. Không cần tạo lại dự án hoặc đổi địa chỉ. Kho GitHub vẫn riêng tư; website là đường dẫn công khai. Trang `lilmox.pages.dev` trước đó không bị thay đổi.
+Dự án Cloudflare giữ kiểu Direct Upload và được GitHub Actions cập nhật tự động. Dự án triển khai hiện tại là `kiss-rockiss-2yrs`. Kho GitHub vẫn riêng tư; website là đường dẫn công khai. Trang `lilmox.pages.dev` trước đó không bị thay đổi.
 
 GitHub Secrets của kho chứa `CLOUDFLARE_ACCOUNT_ID` và `CLOUDFLARE_API_TOKEN`. Token chỉ có quyền Cloudflare Pages: Edit trong tài khoản đã chọn và hết hạn ngày **29/10/2027**. Gia hạn hoặc thay token trong Secrets trước ngày đó để tiếp tục triển khai. Không đưa giá trị token vào mã nguồn.
 
@@ -89,7 +89,7 @@ Có thể triển khai thủ công trên máy khi cần:
 
 ```powershell
 .\build.ps1
-npx wrangler pages deploy dist --project-name mox-minh-hai-nam --branch main
+npx wrangler pages deploy dist --project-name kiss-rockiss-2yrs --branch main
 ```
 
 ## Hoàn thiện ngày 02/11/2026
@@ -118,3 +118,13 @@ git diff --check
 ```
 
 GitHub Actions chạy kiểm tra JavaScript và kiểm thử bộ đếm trước khi build/deploy. Kiểm thử bao gồm nửa đêm UTC+7, ngày bắt đầu, ngày nhuận, ngày kỷ niệm và thời điểm sau kỷ niệm.
+
+## Địa chỉ mới
+
+Website chính: **https://kiss-rockiss-2yrs.pages.dev/**. GitHub Actions triển khai nhánh `main` vào dự án Cloudflare Pages `kiss-rockiss-2yrs`. Kho GitHub vẫn giữ tên `tuanbui100821/mox-minh-hai-nam`; không cần đổi tên kho hay thay GitHub Secrets.
+
+Địa chỉ cũ `https://mox-minh-hai-nam.pages.dev/` được giữ để chuyển tiếp sang địa chỉ mới. Gói chuyển tiếp riêng nằm trong `deployment/legacy-redirect/`, không nằm trong `web/` để tránh tạo vòng lặp trên website chính. Khi cần triển khai lại chuyển tiếp:
+
+```powershell
+npx --yes wrangler@4.155.0 pages deploy deployment/legacy-redirect --project-name=mox-minh-hai-nam --branch=main
+```
