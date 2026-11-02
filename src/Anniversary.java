@@ -50,7 +50,12 @@ public final class Anniversary {
         Properties p = new Properties();
         try (Reader reader = Files.newBufferedReader(root.resolve("config/anniversary.properties"), UTF8)) { p.load(reader); }
         LocalDate start = LocalDate.parse(p.getProperty("startDate"));
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+        long remaining = java.time.temporal.ChronoUnit.DAYS.between(today, start.plusYears(2));
+        String status = remaining > 0 ? "Còn " + remaining + " ngày đến kỷ niệm hai năm · " + display(start.plusYears(2))
+            : remaining == 0 ? "Hôm nay, mình tròn hai năm." : "Mốc hai năm của mình · " + display(start.plusYears(2));
         Path output = root.resolve("dist"); Files.createDirectories(output);
+        Map<String, PhotoSize> previews = createPhotoPreviews(root, output);
         try (var files = Files.walk(root.resolve("web"))) {
             for (Path source : files.filter(Files::isRegularFile).toList()) {
                 Path relative = root.resolve("web").relativize(source), target = output.resolve(relative);
@@ -69,12 +74,16 @@ public final class Anniversary {
                     }
                     for (String key : p.stringPropertyNames()) html = html.replace("{{" + key + "}}", escape(p.getProperty(key)));
                     html = html.replace("{{anniversaryDate}}", start.plusYears(2).toString())
+                        .replace("{{elapsedDays}}", Long.toString(Math.max(0, java.time.temporal.ChronoUnit.DAYS.between(start, today))))
+                        .replace("{{todayDisplay}}", display(today)).replace("{{anniversaryStatus}}", status)
+                        .replace("{{anniversaryLead}}", remaining > 0 ? "Sắp hai năm rồi." : remaining == 0 ? "Hai năm rồi." : "Từ ngày mình có nhau,")
+                        .replace("{{togetherLine}}", remaining > 0 ? "sắp bên nhau hai năm." : remaining == 0 ? "đã bên nhau hai năm." : "vẫn đang viết tiếp.")
                         .replace("{{anniversaryDays}}", Long.toString(java.time.temporal.ChronoUnit.DAYS.between(start, start.plusYears(2))))
                         .replace("{{startDisplay}}", display(start)).replace("{{firstDisplay}}", display(start.plusYears(1)))
                         .replace("{{secondDisplay}}", display(start.plusYears(2))).replace("{{photos}}", gallery(root))
                         .replace("{{journeyTimeline}}", journeyTimeline(root)).replace("{{eventOptions}}", eventOptions(root));
                     if (html.contains("{{")) throw new IllegalStateException("Unresolved template field: " + relative);
-                    Files.writeString(target, html, UTF8);
+                    Files.writeString(target, responsiveImages(html, previews), UTF8);
                 }
             }
         }
@@ -130,6 +139,57 @@ public final class Anniversary {
         return image;
     }
     private static String photoUrl(String filename) { return "assets/photos/" + URLEncoder.encode(filename, UTF8).replace("+", "%20"); }
+    private record PhotoSize(int width, int height, int smallWidth, int largeWidth) {}
+    private static String previewUrl(String filename, String size) {
+        return "assets/photos/previews/" + size + "/" + URLEncoder.encode(filename.replaceFirst("\\.[^.]+$", "") + ".jpg", UTF8).replace("+", "%20");
+    }
+    private static Map<String, PhotoSize> createPhotoPreviews(Path root, Path output) throws IOException {
+        Map<String, PhotoSize> sizes = new LinkedHashMap<>();
+        for (MemoryChapter chapter : memoryChapters(root)) for (MemoryPhoto photo : chapter.photos()) {
+            var original = javax.imageio.ImageIO.read(photoPath(root, photo.file()).toFile());
+            if (original == null) throw new IllegalArgumentException("Unsupported image: " + photo.file());
+            int[] widths = new int[2]; int i = 0;
+            for (String size : List.of("small", "large")) {
+                int maxWidth = size.equals("small") ? 480 : 960, maxHeight = size.equals("small") ? 720 : 1280;
+                double ratio = Math.min(1, Math.min((double) maxWidth / original.getWidth(), (double) maxHeight / original.getHeight()));
+                int width = Math.max(1, (int) Math.round(original.getWidth() * ratio));
+                int height = Math.max(1, (int) Math.round(original.getHeight() * ratio)); widths[i++] = width;
+                var preview = new java.awt.image.BufferedImage(width, height, java.awt.image.BufferedImage.TYPE_INT_RGB);
+                var graphics = preview.createGraphics();
+                graphics.setRenderingHint(java.awt.RenderingHints.KEY_INTERPOLATION, java.awt.RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+                graphics.drawImage(original, 0, 0, width, height, null); graphics.dispose();
+                Path target = output.resolve(previewUrl(photo.file(), size)); Files.createDirectories(target.getParent());
+                var writer = javax.imageio.ImageIO.getImageWritersByFormatName("jpeg").next();
+                try (var stream = javax.imageio.ImageIO.createImageOutputStream(target.toFile())) {
+                    writer.setOutput(stream); var params = writer.getDefaultWriteParam();
+                    params.setCompressionMode(javax.imageio.ImageWriteParam.MODE_EXPLICIT); params.setCompressionQuality(.82f);
+                    writer.write(null, new javax.imageio.IIOImage(preview, null, null), params);
+                } finally { writer.dispose(); }
+            }
+            sizes.put(photo.file(), new PhotoSize(original.getWidth(), original.getHeight(), widths[0], widths[1]));
+        }
+        return sizes;
+    }
+    private static String responsiveImages(String html, Map<String, PhotoSize> sizes) {
+        var matcher = java.util.regex.Pattern.compile("<img([^>]*?)src=\"assets/photos/([^\"]+)\"([^>]*)>").matcher(html);
+        StringBuilder result = new StringBuilder();
+        while (matcher.find()) {
+            String filename = URLDecoder.decode(matcher.group(2), UTF8);
+            PhotoSize size = sizes.get(filename);
+            if (size == null) { matcher.appendReplacement(result, java.util.regex.Matcher.quoteReplacement(matcher.group())); continue; }
+            String attributes = matcher.group(1) + matcher.group(3);
+            if (!attributes.contains("width=")) attributes += " width=\"" + size.width() + "\" height=\"" + size.height() + "\"";
+            String src = attributes.contains("fetchpriority=\"high\"") ? photoUrl(filename) : previewUrl(filename, "large");
+            String responsive = "";
+            if (!attributes.contains("fetchpriority=\"high\"")) {
+                String candidates = previewUrl(filename, "small") + " " + size.smallWidth() + "w";
+                if (size.largeWidth() != size.smallWidth()) candidates += ", " + previewUrl(filename, "large") + " " + size.largeWidth() + "w";
+                responsive = " srcset=\"" + candidates + "\" sizes=\"" + (attributes.contains("album-image") ? "(max-width:700px) 90vw, 650px" : "(max-width:700px) 100vw, 960px") + "\"";
+            }
+            matcher.appendReplacement(result, java.util.regex.Matcher.quoteReplacement("<img src=\"" + src + "\"" + attributes + responsive + ">"));
+        }
+        matcher.appendTail(result); return result.toString();
+    }
     private static String journeyTimeline(Path root) throws IOException {
         StringBuilder html = new StringBuilder("<ol class=\"journey-timeline\" aria-label=\"Dòng thời gian kỷ niệm\">");
         for (MemoryChapter chapter : memoryChapters(root)) {
@@ -159,14 +219,14 @@ public final class Anniversary {
                 if (dimensions == null) throw new IllegalArgumentException("Unsupported image: " + photo.file());
                 int width = dimensions.getWidth(), height = dimensions.getHeight();
                 String date = photo.date() == null ? "" : display(photo.date());
-                String caption = photo.caption() + (date.isBlank() ? "" : " · " + date);
-                html.append("<button class=\"photo-card ").append(width > height ? "landscape" : "portrait").append("\" data-category=\"").append(photo.category())
+                String caption = photo.caption() + " · " + chapter.place() + (date.isBlank() ? "" : " · " + date);
+                html.append("<a href=\"" + photoUrl(photo.file()) + "\" aria-haspopup=\"dialog\" class=\"photo-card ").append(width > height ? "landscape" : "portrait").append("\" data-category=\"").append(photo.category())
                     .append("\" data-event=\"").append(chapter.id()).append("\" data-date=\"").append(photo.date() == null ? "" : photo.date()).append("\" data-photo=\"")
-                    .append(photoUrl(photo.file())).append("\" data-caption=\"").append(escape(caption)).append("\"><img loading=\"lazy\" decoding=\"async\" src=\"")
+                    .append(photoUrl(photo.file())).append("\" data-caption=\"").append(escape(caption)).append("\"><img class=\"album-image\" loading=\"lazy\" decoding=\"async\" src=\"")
                     .append(photoUrl(photo.file())).append("\" width=\"").append(width).append("\" height=\"").append(height).append("\" alt=\"").append(escape(photo.caption()))
                     .append("\"><span>").append(escape(photo.caption())).append("</span>");
                 if (photo.date() != null) html.append("<time datetime=\"").append(photo.date()).append("\">").append(date).append("</time>");
-                html.append("</button>");
+                html.append("</a>");
             }
             html.append("</div></div></article>");
         }

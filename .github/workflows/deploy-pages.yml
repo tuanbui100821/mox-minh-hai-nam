@@ -29,11 +29,19 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
+      - name: Validate browser scripts and calendar
+        run: |
+          node --check web/app.js
+          node --check web/cinema-extended.js
+          node --check web/calendar.js
+          node tests/calendar.test.cjs
       - name: Build website with Java
         run: |
           mkdir -p build/classes
           javac -encoding UTF-8 -d build/classes src/Anniversary.java
           java -cp build/classes Anniversary build .
+      - name: Verify generated website
+        run: node tests/site.test.cjs
       - name: Deploy to Cloudflare Pages
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

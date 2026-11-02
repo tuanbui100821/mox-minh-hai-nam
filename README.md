@@ -89,3 +89,30 @@ Có thể triển khai thủ công trên máy khi cần:
 .\build.ps1
 npx wrangler pages deploy dist --project-name mox-minh-hai-nam --branch main
 ```
+
+## Hoàn thiện ngày 02/11/2026
+
+Giữ nguyên bố cục dài và bảng màu điện ảnh đã chọn. Các thay đổi tập trung vào trải nghiệm và độ ổn định:
+
+- Bộ đếm cập nhật mỗi phút và khi quay lại tab, theo ngày lịch ở Việt Nam (UTC+7). 02/11/2026 là **707 ngày**; 25/11/2026 mới tròn **730 ngày**. Java cũng xuất giá trị đúng khi chưa có JavaScript.
+- Màn mở phim có thêm lựa chọn **Xem không bật nhạc**. Nhạc không tải trước (`preload=none`); nút chính vẫn mở phim kèm nhạc. Có thể hủy khi đang tải và thử lại nếu lỗi hoặc quá 15 giây.
+- Link `#memory-hue`, `#letter`… mở thẳng nội dung, không bị màn giới thiệu chặn và không tự phát nhạc. Sau khi phông chữ tải, vị trí được căn lại nếu người xem chưa thao tác.
+- Java tự tạo 2 bản JPEG xem trước cho mỗi ảnh (480 × 720 và 960 × 1280 tối đa, chất lượng 82%, không phóng lớn nguồn nhỏ). Trình duyệt chọn bằng `srcset`; ảnh lớn vẫn dùng tệp web gốc. Không sửa hoặc thay thế ảnh nguồn.
+- Album giữ đủ **26 ảnh** và 7 nhóm. Ảnh là liên kết thật, có thể mở riêng trong tab mới. Lightbox có số thứ tự, trạng thái tải, thử lại, trái/phải/Escape và vuốt ngang trên màn hình cảm ứng.
+- Cuộn phim có nút mở ảnh đang xem ở kích thước lớn. Thư giữ nguyên nội dung, có thêm nút gấp ở đầu thư và phím Escape. Điều hướng cố định và lối tắt ảnh/thư giúp đi lại trong trang dài.
+- Khi JavaScript tắt, nội dung, thư và ảnh vẫn đọc được. Các chuyển động tuân theo `prefers-reduced-motion`.
+- Build trên máy dọn đúng hai thư mục đầu ra `dist/` và `build/classes/site/`, tránh đóng gói lại tài nguyên của phiên bản cũ. Không đặt tệp cá nhân trong các thư mục sinh tự động này.
+
+Các tệp bổ sung: `web/polish.css`, `web/calendar.js`, `tests/calendar.test.cjs`.
+
+```powershell
+node --check web/app.js
+node --check web/cinema-extended.js
+node --check web/calendar.js
+node tests/calendar.test.cjs
+.\build.ps1
+node tests/site.test.cjs
+git diff --check
+```
+
+GitHub Actions chạy kiểm tra JavaScript và kiểm thử bộ đếm trước khi build/deploy. Kiểm thử bao gồm nửa đêm UTC+7, ngày bắt đầu, ngày nhuận, ngày kỷ niệm và thời điểm sau kỷ niệm.

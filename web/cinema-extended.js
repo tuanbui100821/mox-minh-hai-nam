@@ -66,7 +66,8 @@
   const image=$('#reel-image'),caption=$('#reel-caption'),number=$('#reel-number'),note=$('#reel-note');
   function showScene(next){
     current=(next+scenes.length)%scenes.length;const scene=scenes[current];
-    image.src='assets/photos/'+scene.file;image.alt=scene.alt;caption.textContent=scene.caption;note.textContent=scene.note;
+    image.src='assets/photos/previews/large/'+scene.file.replace(/\.[^.]+$/,'.jpg');image.removeAttribute('srcset');image.removeAttribute('sizes');image.alt=scene.alt;caption.textContent=scene.caption;note.textContent=scene.note;
+    const enlarge=$('#reel-enlarge');enlarge.dataset.photo='assets/photos/'+scene.file;enlarge.dataset.alt=scene.alt;enlarge.dataset.caption=scene.caption+' · '+scene.note;
     number.textContent=String(current+1).padStart(2,'0')+' / '+String(scenes.length).padStart(2,'0');
     image.dataset.scene=String(current);
   }

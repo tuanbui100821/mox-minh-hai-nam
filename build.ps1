@@ -7,6 +7,17 @@ foreach ($candidate in $jdkCandidates) {
     if ((Test-Path -LiteralPath $releasePath) -and ((Get-Content -LiteralPath $releasePath -Raw) -match 'JAVA_VERSION="(\d+)') -and [int]$Matches[1] -ge 17) { $jdkDirectory = $candidate; break }
 }
 if (-not $jdkDirectory) { throw 'Can cai JDK 17 tro len hoac dat JAVA_HOME.' }
+# Clean generated output so old releases never remain inside the packaged website.
+$projectDirectory = [IO.Path]::GetFullPath($PSScriptRoot)
+foreach ($generatedRelative in @('dist', 'build\classes\site')) {
+    $generatedTarget = [IO.Path]::GetFullPath((Join-Path $projectDirectory $generatedRelative))
+    if (-not $generatedTarget.StartsWith($projectDirectory + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { throw 'Generated output escaped the project folder.' }
+    if (Test-Path -LiteralPath $generatedTarget) {
+        $generatedItem = Get-Item -LiteralPath $generatedTarget -Force
+        if ($generatedItem.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'Refusing to clean a linked output folder.' }
+        Remove-Item -LiteralPath $generatedTarget -Recurse -Force
+    }
+}
 New-Item -ItemType Directory -Force -Path 'build\classes' | Out-Null
 & (Join-Path $jdkDirectory 'bin\javac.exe') -encoding UTF-8 -d build/classes src/Anniversary.java
 if ($LASTEXITCODE -ne 0) { throw 'Java compilation failed. Use JDK 17 or newer.' }
