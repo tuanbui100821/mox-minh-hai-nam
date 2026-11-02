@@ -7,7 +7,7 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
  let privateReads=0;
  const env={ROCKISS_PASSWORD_HASH:verifier,ROCKISS_SESSION_KEY:secret,ASSETS:{fetch:async request=>{
   if(new URL(request.url).pathname==='/gate.html')return new Response(fs.readFileSync(path.join(root,'web/gate.html'),'utf8'),{headers:{'Content-Type':'text/html'}});
-  privateReads++;return new Response('<html><body class="story">PRIVATE_MEMORY</body></html>',{headers:{'Content-Type':'text/html','Cache-Control':'public,max-age=14400'}});
+  privateReads++;if(new URL(request.url).pathname.startsWith('/assets/audio/'))return new Response(new Uint8Array(100),{headers:{'Content-Type':'audio/mp4','Content-Length':'100'}});return new Response('<html><body class="story">PRIVATE_MEMORY</body></html>',{headers:{'Content-Type':'text/html','Cache-Control':'public,max-age=14400'}});
  }}};
  const origin='https://test.pages.dev';
  const login=(pw,next='/',ip='192.0.2.1',requestOrigin=origin)=>new Request(origin+'/__auth/login',{method:'POST',headers:{Origin:requestOrigin,'Content-Type':'application/x-www-form-urlencoded','CF-Connecting-IP':ip},body:new URLSearchParams({password:pw,next})});
@@ -24,6 +24,10 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
  const cookie=setCookie.split(';')[0];
  response=await worker.fetch(new Request(origin+'/',{headers:{Cookie:cookie}}),env);html=await response.text();assert.ok(html.includes('PRIVATE_MEMORY'));assert.ok(html.includes('data-protected="true"'));assert.match(response.headers.get('Cache-Control'),/no-store/);
  response=await worker.fetch(new Request(origin+'/assets/photos/gan-nhau.jpg',{headers:{Cookie:cookie}}),env);assert.equal(response.status,200);
+ for(const [range,status,size] of [['bytes=5-12',206,8],['bytes=-2',206,2],['bytes=999-',416,0]]){
+  const response=await worker.fetch(new Request(origin+'/assets/audio/song.m4a',{headers:{Cookie:cookie,Range:range}}),env);
+  assert.equal(response.status,status);assert.equal((await response.arrayBuffer()).byteLength,size);
+ }
  const signed=async data=>{const encoded=Buffer.from(JSON.stringify(data)).toString('base64url');const k=await webcrypto.subtle.importKey('raw',Buffer.from(secret,'base64url'),{name:'HMAC',hash:'SHA-256'},false,['sign']);const mac=Buffer.from(await webcrypto.subtle.sign('HMAC',k,Buffer.from(encoded))).toString('base64url');return '__Host-rockiss_session='+encoded+'.'+mac;};
  for(const badCookie of [cookie.replace('=', '=tampered'),await signed({host:'test.pages.dev',exp:1}),await signed({host:'other.pages.dev',exp:Math.floor(Date.now()/1000)+1000})]){
   response=await worker.fetch(new Request(origin+'/assets/photos/gan-nhau.jpg',{headers:{Cookie:badCookie}}),env);assert.equal(response.status,401);

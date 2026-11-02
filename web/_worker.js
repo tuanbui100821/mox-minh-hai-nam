@@ -38,6 +38,22 @@ export default {async fetch(request,env){
  }
  if(url.pathname.startsWith('/__auth/')||['/_worker.js','/_routes.json','/gate.html'].includes(url.pathname))return new Response('Not found',{status:404,headers:headers()});
  const response=await env.ASSETS.fetch(request),protectedHeaders=new Headers(response.headers);for(const [name,value] of Object.entries(headers()))protectedHeaders.set(name,value);
+ // Pages' asset binding may return the complete audio even for a Range request.
+ // Keep Safari/phone seeking working without exposing any unauthenticated bytes.
+ const range=request.headers.get('Range');
+ if(method==='GET'&&range&&response.status===200&&protectedHeaders.get('Content-Type')?.startsWith('audio/')){
+  const match=/^bytes=([0-9]*)-([0-9]*)$/.exec(range);
+  if(match&&(match[1]||match[2])){
+   const bytes=await response.arrayBuffer(),total=bytes.byteLength;
+   const start=match[1]?Number(match[1]):Math.max(0,total-Number(match[2]));
+   const end=match[1]?(match[2]?Math.min(Number(match[2]),total-1):total-1):total-1;
+   protectedHeaders.set('Accept-Ranges','bytes');protectedHeaders.delete('Content-Encoding');
+   if(!Number.isSafeInteger(start)||!Number.isSafeInteger(end)||start> end||start>=total){protectedHeaders.set('Content-Range','bytes */'+total);protectedHeaders.delete('Content-Length');return new Response(null,{status:416,headers:protectedHeaders});}
+   protectedHeaders.set('Content-Range',`bytes ${start}-${end}/${total}`);protectedHeaders.set('Content-Length',String(end-start+1));
+   return new Response(bytes.slice(start,end+1),{status:206,headers:protectedHeaders});
+  }
+ }
+
  if(method==='GET'&&protectedHeaders.get('Content-Type')?.includes('text/html')){const html=(await response.text()).replace('<body ','<body data-protected="true" ');protectedHeaders.delete('Content-Length');protectedHeaders.delete('Content-Encoding');protectedHeaders.delete('ETag');return new Response(html,{status:response.status,headers:protectedHeaders});}
  return new Response(response.body,{status:response.status,statusText:response.statusText,headers:protectedHeaders});
 }};
