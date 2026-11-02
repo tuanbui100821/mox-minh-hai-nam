@@ -128,19 +128,3 @@ Website chính: **https://kiss-rockiss-2yrs.pages.dev/**. GitHub Actions triển
 ```powershell
 npx --yes wrangler@4.155.0 pages deploy deployment/legacy-redirect --project-name=mox-minh-hai-nam --branch=main
 ```
-
-## Mật khẩu bảo vệ website
-
-Cloudflare Pages chạy `web/_worker.js` trước **mọi** yêu cầu (cấu hình `web/_routes.json`). Chưa có phiên hợp lệ chỉ xem được màn nhập mật khẩu; HTML chính, ảnh, nhạc và JavaScript riêng không được trả về. Màn khóa ở `web/gate.html`, cùng bảng màu điện ảnh, hỗ trợ báo sai và hiện/ẩn mật khẩu. Đăng nhập đúng mở thẳng câu chuyện, không tự phát nhạc. Nút **Khóa lại** kết thúc phiên.
-
-Mật khẩu không nằm trong HTML, JavaScript hoặc kho Git. Cloudflare Secrets giữ `ROCKISS_PASSWORD_HASH` (PBKDF2-SHA256, salt ngẫu nhiên, 100.000 vòng) và `ROCKISS_SESSION_KEY`. Cookie đăng nhập được ký HMAC, ràng buộc hostname, hết hạn sau 7 ngày; có `HttpOnly`, `Secure`, `SameSite=Lax`. Tài nguyên bảo vệ trả về `private, no-store`. Thiếu secrets thì đóng truy cập với HTTP 503. Giới hạn nhập sai 5 lần/15 phút trong mỗi isolate; đây là hạn chế cục bộ, không thay cho rate limit toàn mạng.
-
-Đổi mật khẩu bằng lệnh sau; nhập mật khẩu qua stdin/terminal, không đặt trong tham số hoặc tệp cấu hình. Script chỉ gửi hash và khóa mới lên Cloudflare, không lưu ra đĩa:
-
-```powershell
-& 'C:\Users\PC05\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' scripts/set-site-password.py
-```
-
-Sau khi đổi secrets, triển khai lại để áp dụng và vô hiệu hóa cookie cũ. Không commit `.dev.vars`, mật khẩu, cookie hoặc khóa phiên. Java vẫn build nội dung và chạy bản xem trước; máy chủ Java cục bộ không thực thi Pages Worker. Kiểm tra bảo vệ thực tế trên Cloudflare hoặc Wrangler Pages dev.
-
-`node tests/auth.test.cjs` kiểm tra quyền truy cập, mật khẩu, cookie giả/hết hạn/sai hostname, CSRF, chuyển hướng ngoài, giới hạn thử và đăng xuất. Các deployment lịch sử đã công khai trước khi thêm mật khẩu không được thay đổi ngược bởi Worker của bản mới.

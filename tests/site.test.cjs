@@ -37,5 +37,3 @@ if(/^displayMode=anniversary$/m.test(config.replace(/\r/g,''))){
  assert.ok(!html.includes('sắp bên nhau hai năm.'));
  console.log('Passed: Java fallback also renders the anniversary date and message.');
 }
-
-for(const file of ['_worker.js','_routes.json','gate.html'])assert.ok(fs.statSync(path.join(dist,file)).isFile(),'Missing password gate asset: '+file);
